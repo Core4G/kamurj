@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "loan_details",
+  "info": {
+    "singularName": "loan-detail",
+    "pluralName": "loan-details",
+    "displayName": "LoanTerm"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "enum": [
+        "pair",
+        "single",
+        "file"
+      ]
+    },
+    "term_data": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::term-data.term-data"
+    }
+  }
+}

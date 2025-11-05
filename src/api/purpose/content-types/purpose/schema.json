@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "purposes",
+  "info": {
+    "singularName": "purpose",
+    "pluralName": "purposes",
+    "displayName": "LoanPurpose"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    }
+  }
+}
