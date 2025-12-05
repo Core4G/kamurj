@@ -53,6 +53,16 @@
       },
       "required": true,
       "default": 0
+    },
+    "showInTable": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "default": true
     }
   }
 }

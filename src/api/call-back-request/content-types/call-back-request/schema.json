@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "call_back_requests",
+  "info": {
+    "singularName": "call-back-request",
+    "pluralName": "call-back-requests",
+    "displayName": "CallBackRequest"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "PhoneNumber": {
+      "type": "string",
+      "required": true
+    },
+    "Contacted": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Comments": {
+      "type": "text"
+    }
+  }
+}

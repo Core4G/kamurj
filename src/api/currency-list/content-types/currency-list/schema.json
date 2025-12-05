@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "currency_lists",
+  "info": {
+    "singularName": "currency-list",
+    "pluralName": "currency-lists",
+    "displayName": "CurrencyList"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "currency": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    }
+  }
+}

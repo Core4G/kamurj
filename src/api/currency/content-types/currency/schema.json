@@ -99,7 +99,7 @@
           "localized": false
         }
       },
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "allowedTypes": [
         "images",

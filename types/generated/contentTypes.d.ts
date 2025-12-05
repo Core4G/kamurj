@@ -430,6 +430,78 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCallBackRequestCallBackRequest
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'call_back_requests';
+  info: {
+    displayName: 'CallBackRequest';
+    pluralName: 'call-back-requests';
+    singularName: 'call-back-request';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Comments: Schema.Attribute.Text;
+    Contacted: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::call-back-request.call-back-request'
+    > &
+      Schema.Attribute.Private;
+    PhoneNumber: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiCurrencyListCurrencyList
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'currency_lists';
+  info: {
+    displayName: 'CurrencyList';
+    pluralName: 'currency-lists';
+    singularName: 'currency-list';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    currency: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::currency-list.currency-list'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
   collectionName: 'currencies';
   info: {
@@ -465,10 +537,7 @@ export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    icon: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    > &
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -622,6 +691,14 @@ export interface ApiExchangeRateExchangeRate
         };
       }> &
       Schema.Attribute.DefaultTo<0>;
+    showInTable: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<true>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -798,6 +875,15 @@ export interface ApiLoanGroupLoanGroup extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    activeIconSrc: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1651,6 +1737,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::call-back-request.call-back-request': ApiCallBackRequestCallBackRequest;
+      'api::currency-list.currency-list': ApiCurrencyListCurrencyList;
       'api::currency.currency': ApiCurrencyCurrency;
       'api::doc.doc': ApiDocDoc;
       'api::exchange-rate.exchange-rate': ApiExchangeRateExchangeRate;
