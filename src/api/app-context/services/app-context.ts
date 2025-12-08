@@ -57,6 +57,16 @@ module.exports = {
       },
     });
 
-    return { globals, languages, loanGroups, topLoans, news };
+    const currencies = await strapi.entityService.findMany(
+      "api::exchange-rate.exchange-rate",
+      {
+        filters: {
+          locale: locale || "hy",
+          publishedAt: { $notNull: true },
+        },
+      },
+    );
+
+    return { globals, languages, loanGroups, topLoans, news, currencies };
   },
 };
