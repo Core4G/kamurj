@@ -34,7 +34,6 @@ module.exports = {
         },
       },
     );
-    console.log(loanGroups);
 
     const topLoans = await strapi.entityService.findMany("api::loan.loan", {
       filters: {
@@ -48,6 +47,16 @@ module.exports = {
       },
     });
 
-    return { globals, languages, loanGroups, topLoans };
+    const news = await strapi.entityService.findMany("api::new.new", {
+      filters: {
+        locale: locale || "hy",
+        publishedAt: { $notNull: true },
+      },
+      populate: {
+        imageSrc: true,
+      },
+    });
+
+    return { globals, languages, loanGroups, topLoans, news };
   },
 };

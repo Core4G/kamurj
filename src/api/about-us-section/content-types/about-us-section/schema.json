@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "about_us_sections",
+  "info": {
+    "singularName": "about-us-section",
+    "pluralName": "about-us-sections",
+    "displayName": "aboutUsSection"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "about_us_section_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::about-us-section-item.about-us-section-item"
+    }
+  }
+}
