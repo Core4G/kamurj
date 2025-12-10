@@ -43,7 +43,7 @@
       "required": true,
       "default": false
     },
-    "imageSrc": {
+    "widgetImageSrc": {
       "type": "media",
       "pluginOptions": {
         "i18n": {
@@ -104,6 +104,36 @@
         "videos",
         "audios"
       ]
+    },
+    "mainImageSrc": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "loan_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::loan-group.loan-group",
+      "inversedBy": "loans"
+    },
+    "showOnMainPage": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "default": false
     }
   }
 }

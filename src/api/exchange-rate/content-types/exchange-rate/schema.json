@@ -63,6 +63,15 @@
       },
       "required": true,
       "default": true
+    },
+    "isLoanCurrency": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "default": true
     }
   }
 }

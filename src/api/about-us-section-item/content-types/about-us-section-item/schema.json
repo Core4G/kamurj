@@ -4,7 +4,7 @@
   "info": {
     "singularName": "about-us-section-item",
     "pluralName": "about-us-section-items",
-    "displayName": "aboutUsSectionItem"
+    "displayName": "AboutUsSectionItem"
   },
   "options": {
     "draftAndPublish": false

@@ -434,7 +434,7 @@ export interface ApiAboutUsSectionItemAboutUsSectionItem
   extends Struct.CollectionTypeSchema {
   collectionName: 'about_us_section_items';
   info: {
-    displayName: 'aboutUsSectionItem';
+    displayName: 'AboutUsSectionItem';
     pluralName: 'about-us-section-items';
     singularName: 'about-us-section-item';
   };
@@ -472,7 +472,7 @@ export interface ApiAboutUsSectionAboutUsSection
   extends Struct.CollectionTypeSchema {
   collectionName: 'about_us_sections';
   info: {
-    displayName: 'aboutUsSection';
+    displayName: 'AboutUsSection';
     pluralName: 'about-us-sections';
     singularName: 'about-us-section';
   };
@@ -513,7 +513,7 @@ export interface ApiAboutUsSectionAboutUsSection
 export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
   collectionName: 'branches';
   info: {
-    displayName: 'branch';
+    displayName: 'Branch';
     pluralName: 'branches';
     singularName: 'branch';
   };
@@ -619,45 +619,6 @@ export interface ApiCallBackRequestCallBackRequest
   };
 }
 
-export interface ApiCurrencyListCurrencyList
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'currency_lists';
-  info: {
-    displayName: 'CurrencyList';
-    pluralName: 'currency-lists';
-    singularName: 'currency-list';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    currency: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::currency-list.currency-list'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
   collectionName: 'currencies';
   info: {
@@ -668,86 +629,37 @@ export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
   options: {
     draftAndPublish: false;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
     actualMaxRate: Schema.Attribute.Decimal &
       Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Schema.Attribute.DefaultTo<0>;
     actualMinRate: Schema.Attribute.Decimal &
       Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Schema.Attribute.DefaultTo<0>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    interestRate: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<0>;
-    locale: Schema.Attribute.String;
+      Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::currency.currency'
-    >;
+    > &
+      Schema.Attribute.Private;
     maxDuration: Schema.Attribute.BigInteger &
       Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Schema.Attribute.DefaultTo<'0'>;
+    maxInterestRate: Schema.Attribute.Decimal;
     maxValue: Schema.Attribute.BigInteger &
       Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Schema.Attribute.DefaultTo<'0'>;
-    minDuration: Schema.Attribute.BigInteger &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    minValue: Schema.Attribute.BigInteger &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    name: Schema.Attribute.String &
+    minDuration: Schema.Attribute.BigInteger;
+    minInterestRate: Schema.Attribute.Decimal &
       Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+      Schema.Attribute.DefaultTo<0>;
+    minValue: Schema.Attribute.BigInteger;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -833,6 +745,13 @@ export interface ApiExchangeRateExchangeRate
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    isLoanCurrency: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<true>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1043,38 +962,10 @@ export interface ApiLoanGroupLoanGroup extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    displayName: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    highestRate: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<0>;
     iconSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
-        };
-      }>;
-    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
         };
       }>;
     loans: Schema.Attribute.Relation<'oneToMany', 'api::loan.loan'>;
@@ -1083,14 +974,6 @@ export interface ApiLoanGroupLoanGroup extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::loan-group.loan-group'
     >;
-    lowestRate: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<0>;
     maxAmount: Schema.Attribute.BigInteger &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1099,13 +982,6 @@ export interface ApiLoanGroupLoanGroup extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'0'>;
-    maxDuration: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     minAmount: Schema.Attribute.BigInteger &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1114,13 +990,6 @@ export interface ApiLoanGroupLoanGroup extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'0'>;
-    minDuration: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     multiPurpose: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1138,14 +1007,6 @@ export interface ApiLoanGroupLoanGroup extends Struct.CollectionTypeSchema {
       }>;
     publishedAt: Schema.Attribute.DateTime;
     purposes: Schema.Attribute.Relation<'oneToMany', 'api::purpose.purpose'>;
-    showOnMainPage: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1193,13 +1054,6 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
-    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     isTopLoan: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1212,8 +1066,20 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::currency.currency'
     >;
+    loan_group: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::loan-group.loan-group'
+    >;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::loan.loan'>;
+    mainImageSrc: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1231,6 +1097,13 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<false>;
+    showOnMainPage: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
     terms: Schema.Attribute.Relation<
       'oneToMany',
       'api::loan-detail.loan-detail'
@@ -1238,6 +1111,15 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    widgetImageSrc: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
   };
 }
 
@@ -1897,7 +1779,6 @@ declare module '@strapi/strapi' {
       'api::about-us-section.about-us-section': ApiAboutUsSectionAboutUsSection;
       'api::branch.branch': ApiBranchBranch;
       'api::call-back-request.call-back-request': ApiCallBackRequestCallBackRequest;
-      'api::currency-list.currency-list': ApiCurrencyListCurrencyList;
       'api::currency.currency': ApiCurrencyCurrency;
       'api::doc.doc': ApiDocDoc;
       'api::exchange-rate.exchange-rate': ApiExchangeRateExchangeRate;
