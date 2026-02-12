@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_widget_list_item_widget_list_items",
+  "info": {
+    "displayName": "widgetListItem"
+  },
+  "options": {},
+  "attributes": {
+    "imageSrc": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}

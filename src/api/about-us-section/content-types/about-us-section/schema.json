@@ -23,10 +23,19 @@
         }
       }
     },
-    "about_us_section_items": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::about-us-section-item.about-us-section-item"
+    "blocks": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "option-list.option-list",
+        "person-list.person-list",
+        "plain-text.plain-text",
+        "widget-list.widget-list"
+      ]
     }
   }
 }

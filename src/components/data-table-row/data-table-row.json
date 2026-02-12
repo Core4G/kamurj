@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_data_table_row_data_table_rows",
+  "info": {
+    "displayName": "dataTableRow"
+  },
+  "options": {},
+  "attributes": {
+    "firstColContent": {
+      "type": "blocks"
+    },
+    "cells": {
+      "type": "component",
+      "component": "data-table-row-cell.data-table-row-cell",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

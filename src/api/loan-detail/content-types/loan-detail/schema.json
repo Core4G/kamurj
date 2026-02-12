@@ -24,24 +24,33 @@
       },
       "required": true
     },
-    "type": {
-      "type": "enumeration",
+    "fileSrc": {
+      "type": "media",
       "pluginOptions": {
         "i18n": {
           "localized": false
         }
       },
-      "required": true,
-      "enum": [
-        "pair",
-        "single",
-        "file"
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
       ]
     },
-    "term_data": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::term-data.term-data"
+    "termData": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "data-table.data-table",
+        "plain-text.plain-text",
+        "single-row.single-row"
+      ]
     }
   }
 }

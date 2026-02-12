@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_plain_text_plain_texts",
+  "info": {
+    "displayName": "plainText"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}

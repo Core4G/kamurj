@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_option_item_option_items",
+  "info": {
+    "displayName": "optionItem"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "OptionItemWidget": {
+      "type": "component",
+      "component": "option-item-widget.option-item-widget",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_option_list_option_lists",
+  "info": {
+    "displayName": "optionList"
+  },
+  "options": {},
+  "attributes": {
+    "optionItems": {
+      "type": "component",
+      "component": "option-item.option-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_widget_list_widget_lists",
+  "info": {
+    "displayName": "widgetList"
+  },
+  "options": {},
+  "attributes": {
+    "widgetListItem": {
+      "type": "component",
+      "component": "widget-list-item.widget-list-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

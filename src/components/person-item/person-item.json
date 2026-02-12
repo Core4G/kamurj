@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_person_item_person_items",
+  "info": {
+    "displayName": "PersonItem"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "position": {
+      "type": "string"
+    },
+    "imageSrc": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "bio": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}

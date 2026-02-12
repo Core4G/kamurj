@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_person_list_person_lists",
+  "info": {
+    "displayName": "personList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "personItem": {
+      "type": "component",
+      "component": "person-item.person-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

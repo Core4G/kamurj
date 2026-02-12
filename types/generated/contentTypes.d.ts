@@ -430,44 +430,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAboutUsSectionItemAboutUsSectionItem
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'about_us_section_items';
-  info: {
-    displayName: 'AboutUsSectionItem';
-    pluralName: 'about-us-section-items';
-    singularName: 'about-us-section-item';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    content: Schema.Attribute.Blocks &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::about-us-section-item.about-us-section-item'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiAboutUsSectionAboutUsSection
   extends Struct.CollectionTypeSchema {
   collectionName: 'about_us_sections';
@@ -485,10 +447,19 @@ export interface ApiAboutUsSectionAboutUsSection
     };
   };
   attributes: {
-    about_us_section_items: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::about-us-section-item.about-us-section-item'
-    >;
+    blocks: Schema.Attribute.DynamicZone<
+      [
+        'option-list.option-list',
+        'person-list.person-list',
+        'plain-text.plain-text',
+        'widget-list.widget-list',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -498,6 +469,61 @@ export interface ApiAboutUsSectionAboutUsSection
       'api::about-us-section.about-us-section'
     >;
     publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiBondTermBondTerm extends Struct.CollectionTypeSchema {
+  collectionName: 'bond_terms';
+  info: {
+    displayName: 'BondTerm';
+    pluralName: 'bond-terms';
+    singularName: 'bond-term';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    fileSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::bond-term.bond-term'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    termData: Schema.Attribute.DynamicZone<
+      [
+        'data-table.data-table',
+        'plain-text.plain-text',
+        'single-row.single-row',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -541,13 +567,15 @@ export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    lat: Schema.Attribute.Decimal &
+    lat: Schema.Attribute.String &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
-    lng: Schema.Attribute.Decimal &
+    lng: Schema.Attribute.String &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -661,6 +689,7 @@ export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
     minValue: Schema.Attribute.BigInteger;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    strictInterestRate: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -904,28 +933,35 @@ export interface ApiLoanDetailLoanDetail extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    fileSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::loan-detail.loan-detail'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    term_data: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::term-data.term-data'
-    >;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
+    termData: Schema.Attribute.DynamicZone<
+      [
+        'data-table.data-table',
+        'plain-text.plain-text',
+        'single-row.single-row',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    type: Schema.Attribute.Enumeration<['pair', 'single', 'file']> &
+    title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
+          localized: true;
         };
       }>;
     updatedAt: Schema.Attribute.DateTime;
@@ -1210,55 +1246,6 @@ export interface ApiPurposePurpose extends Struct.CollectionTypeSchema {
         };
       }>;
     publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiTermDataTermData extends Struct.CollectionTypeSchema {
-  collectionName: 'term_datas';
-  info: {
-    displayName: 'LoanTermData';
-    pluralName: 'term-datas';
-    singularName: 'term-data';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Blocks &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    fileSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::term-data.term-data'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.Blocks &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1775,8 +1762,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::about-us-section-item.about-us-section-item': ApiAboutUsSectionItemAboutUsSectionItem;
       'api::about-us-section.about-us-section': ApiAboutUsSectionAboutUsSection;
+      'api::bond-term.bond-term': ApiBondTermBondTerm;
       'api::branch.branch': ApiBranchBranch;
       'api::call-back-request.call-back-request': ApiCallBackRequestCallBackRequest;
       'api::currency.currency': ApiCurrencyCurrency;
@@ -1789,7 +1776,6 @@ declare module '@strapi/strapi' {
       'api::loan.loan': ApiLoanLoan;
       'api::new.new': ApiNewNew;
       'api::purpose.purpose': ApiPurposePurpose;
-      'api::term-data.term-data': ApiTermDataTermData;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

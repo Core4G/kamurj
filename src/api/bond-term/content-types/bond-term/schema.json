@@ -1,13 +1,13 @@
 {
   "kind": "collectionType",
-  "collectionName": "term_datas",
+  "collectionName": "bond_terms",
   "info": {
-    "singularName": "term-data",
-    "pluralName": "term-datas",
-    "displayName": "LoanTermData"
+    "singularName": "bond-term",
+    "pluralName": "bond-terms",
+    "displayName": "BondTerm"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -16,15 +16,7 @@
   },
   "attributes": {
     "title": {
-      "type": "blocks",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "description": {
-      "type": "blocks",
+      "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -35,7 +27,7 @@
       "type": "media",
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       },
       "multiple": false,
@@ -44,6 +36,19 @@
         "files",
         "videos",
         "audios"
+      ]
+    },
+    "termData": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "data-table.data-table",
+        "plain-text.plain-text",
+        "single-row.single-row"
       ]
     }
   }

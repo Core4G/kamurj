@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_single_row_single_rows",
+  "info": {
+    "displayName": "singleRow"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "blocks"
+    },
+    "fileSrc": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

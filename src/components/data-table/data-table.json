@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_data_table_data_tables",
+  "info": {
+    "displayName": "dataTable"
+  },
+  "options": {},
+  "attributes": {
+    "rows": {
+      "type": "component",
+      "component": "data-table-row.data-table-row",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

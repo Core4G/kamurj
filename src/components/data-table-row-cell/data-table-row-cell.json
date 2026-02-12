@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_data_table_row_cell_data_table_row_cells",
+  "info": {
+    "displayName": "dataTableRowCell"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "blocks"
+    },
+    "colSpan": {
+      "type": "integer"
+    }
+  },
+  "config": {}
+}
