@@ -43,6 +43,34 @@ module.exports = {
           widgetImageSrc: true,
           iconSrc: true,
           loan_currencies: { populate: { icon: true } },
+          terms: {
+            populate: {
+              termData: {
+                on: {
+                  "plain-text.plain-text": {
+                    populate: "*",
+                  },
+                  "data-table.data-table": {
+                    populate: {
+                      rows:{
+                        populate: {
+                          cells: {
+                            populate: "*"
+                          }
+                        }
+                      }
+                    },
+                  },
+                  "single-row.single-row": {
+                    populate: {
+                      fileSrc: true
+                    },
+                  },
+                },
+              },
+              fileSrc: true
+      }
+           },
         },
       });
 

@@ -816,6 +816,40 @@ export interface ApiExchangeRateExchangeRate
   };
 }
 
+export interface ApiFeedbackFeedback extends Struct.CollectionTypeSchema {
+  collectionName: 'feedbacks';
+  info: {
+    displayName: 'Feedback';
+    pluralName: 'feedbacks';
+    singularName: 'feedback';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    comments: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::feedback.feedback'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    phoneNumber: Schema.Attribute.String;
+    processed: Schema.Attribute.Boolean;
+    publishedAt: Schema.Attribute.DateTime;
+    surname: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<['question', 'claim']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.CollectionTypeSchema {
   collectionName: 'globals';
   info: {
@@ -1769,6 +1803,7 @@ declare module '@strapi/strapi' {
       'api::currency.currency': ApiCurrencyCurrency;
       'api::doc.doc': ApiDocDoc;
       'api::exchange-rate.exchange-rate': ApiExchangeRateExchangeRate;
+      'api::feedback.feedback': ApiFeedbackFeedback;
       'api::global.global': ApiGlobalGlobal;
       'api::language.language': ApiLanguageLanguage;
       'api::loan-detail.loan-detail': ApiLoanDetailLoanDetail;

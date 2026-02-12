@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "feedbacks",
+  "info": {
+    "singularName": "feedback",
+    "pluralName": "feedbacks",
+    "displayName": "Feedback"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "question",
+        "claim"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "comments": {
+      "type": "string"
+    },
+    "processed": {
+      "type": "boolean"
+    }
+  }
+}
