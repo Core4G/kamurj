@@ -11,20 +11,15 @@ module.exports = {
         },
       );
 
-      const languages = await strapi.entityService.findMany(
-        "api::language.language",
-        {
-          filters: { publishedAt: { $notNull: true } },
-          populate: {
-            iconUrl: true,
-          },
-        },
-      );
+      const languages = await strapi.entityService.findMany("api::language.language", {
+        status: "published",
+        populate: { iconUrl: true },
+      });
 
       const loanGroups = await strapi.entityService.findMany(
         "api::loan-group.loan-group",
         {
-          filters: { locale: locale || "hy", publishedAt: { $notNull: true } },
+          filters: { locale: locale || "hy"},
           populate: {
             iconSrc: true,
             activeIconSrc: true,
@@ -34,8 +29,7 @@ module.exports = {
 
       const loans = await strapi.entityService.findMany("api::loan.loan", {
         filters: {
-          locale: locale || "hy",
-          publishedAt: { $notNull: true },
+          locale: locale || "hy"
         },
         populate: {
           loan_group: true,
@@ -102,7 +96,6 @@ module.exports = {
       const news = await strapi.entityService.findMany("api::new.new", {
         filters: {
           locale: locale || "hy",
-          publishedAt: { $notNull: true },
         },
         populate: {
           imageSrc: true,
@@ -113,11 +106,18 @@ module.exports = {
         "api::exchange-rate.exchange-rate",
         {
           filters: {
-            locale: locale || "hy",
-            publishedAt: { $notNull: true },
+            locale: "hy",
           },
         },
       );
+
+      const exchangeCurrenciesGold = await strapi.entityService.findMany(
+        "api::gold-rate.gold-rate",
+        {
+          sort: { id: "desc" },
+        }
+      );
+      
       const branches = await strapi.entityService.findMany(
         "api::branch.branch",
         {
@@ -135,6 +135,7 @@ module.exports = {
         loans,
         news,
         currencies: exchangeCurrencies,
+        currenciesGold: exchangeCurrenciesGold,
         loanCurrencies: filteredLoanCurrencies,
         branches,
       };
@@ -147,6 +148,7 @@ module.exports = {
         loans: [],
         news: [],
         currencies: [],
+        currenciesGold: [],
         loanCurrencies: [],
         branches: [],
       };

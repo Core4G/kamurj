@@ -763,14 +763,18 @@ export interface ApiExchangeRateExchangeRate
         };
       }> &
       Schema.Attribute.DefaultTo<0>;
-    cb: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
+    cashlessBuy: Schema.Attribute.Decimal &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
+          localized: true;
         };
-      }> &
-      Schema.Attribute.DefaultTo<0>;
+      }>;
+    cashlessSell: Schema.Attribute.Decimal &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -840,7 +844,7 @@ export interface ApiFeedbackFeedback extends Struct.CollectionTypeSchema {
     message: Schema.Attribute.String;
     name: Schema.Attribute.String;
     phoneNumber: Schema.Attribute.String;
-    processed: Schema.Attribute.Boolean;
+    processed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     publishedAt: Schema.Attribute.DateTime;
     surname: Schema.Attribute.String;
     type: Schema.Attribute.Enumeration<['question', 'claim']>;
@@ -897,6 +901,35 @@ export interface ApiGlobalGlobal extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiGoldRateGoldRate extends Struct.CollectionTypeSchema {
+  collectionName: 'gold_rates';
+  info: {
+    displayName: 'GoldRate';
+    pluralName: 'gold-rates';
+    singularName: 'gold-rate';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::gold-rate.gold-rate'
+    > &
+      Schema.Attribute.Private;
+    price: Schema.Attribute.Decimal;
+    publishedAt: Schema.Attribute.DateTime;
+    purity: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLanguageLanguage extends Struct.CollectionTypeSchema {
   collectionName: 'languages';
   info: {
@@ -905,7 +938,7 @@ export interface ApiLanguageLanguage extends Struct.CollectionTypeSchema {
     singularName: 'language';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -1805,6 +1838,7 @@ declare module '@strapi/strapi' {
       'api::exchange-rate.exchange-rate': ApiExchangeRateExchangeRate;
       'api::feedback.feedback': ApiFeedbackFeedback;
       'api::global.global': ApiGlobalGlobal;
+      'api::gold-rate.gold-rate': ApiGoldRateGoldRate;
       'api::language.language': ApiLanguageLanguage;
       'api::loan-detail.loan-detail': ApiLoanDetailLoanDetail;
       'api::loan-group.loan-group': ApiLoanGroupLoanGroup;

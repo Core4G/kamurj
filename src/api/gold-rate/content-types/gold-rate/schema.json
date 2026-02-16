@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gold_rates",
+  "info": {
+    "singularName": "gold-rate",
+    "pluralName": "gold-rates",
+    "displayName": "GoldRate"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "purity": {
+      "type": "integer"
+    },
+    "price": {
+      "type": "decimal"
+    }
+  }
+}
