@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_news_option_news_options",
+  "info": {
+    "displayName": "newsOption"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "newsOptionItems": {
+      "type": "component",
+      "component": "news-option-item.news-option-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

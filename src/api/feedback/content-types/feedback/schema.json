@@ -13,29 +13,34 @@
   "attributes": {
     "type": {
       "type": "enumeration",
+      "required": true,
       "enum": [
         "question",
         "claim"
       ]
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "surname": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "phoneNumber": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "message": {
-      "type": "string"
-    },
-    "comments": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "processed": {
       "type": "boolean",
       "default": false
+    },
+    "comments": {
+      "type": "blocks"
     }
   }
 }

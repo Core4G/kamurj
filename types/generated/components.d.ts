@@ -36,6 +36,34 @@ export interface DataTableDataTable extends Struct.ComponentSchema {
   };
 }
 
+export interface NewsOptionItemNewsOptionItem extends Struct.ComponentSchema {
+  collectionName: 'components_news_option_item_news_option_items';
+  info: {
+    displayName: 'newsOptionItem';
+  };
+  attributes: {
+    dateUpdated: Schema.Attribute.Date;
+    description: Schema.Attribute.Text;
+    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    showOnMainPage: Schema.Attribute.Boolean;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface NewsOptionNewsOption extends Struct.ComponentSchema {
+  collectionName: 'components_news_option_news_options';
+  info: {
+    displayName: 'newsOption';
+  };
+  attributes: {
+    newsOptionItems: Schema.Attribute.Component<
+      'news-option-item.news-option-item',
+      true
+    >;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface OptionItemWidgetOptionItemWidget
   extends Struct.ComponentSchema {
   collectionName: 'components_option_item_widget_option_item_widgets';
@@ -147,6 +175,8 @@ declare module '@strapi/strapi' {
       'data-table-row-cell.data-table-row-cell': DataTableRowCellDataTableRowCell;
       'data-table-row.data-table-row': DataTableRowDataTableRow;
       'data-table.data-table': DataTableDataTable;
+      'news-option-item.news-option-item': NewsOptionItemNewsOptionItem;
+      'news-option.news-option': NewsOptionNewsOption;
       'option-item-widget.option-item-widget': OptionItemWidgetOptionItemWidget;
       'option-item.option-item': OptionItemOptionItem;
       'option-list.option-list': OptionListOptionList;

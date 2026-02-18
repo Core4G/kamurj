@@ -15,7 +15,23 @@
       "type": "string",
       "required": true
     },
+    "strictInterestRate": {
+      "type": "decimal"
+    },
     "minInterestRate": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "maxInterestRate": {
+      "type": "decimal"
+    },
+    "actualMinRate": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "actualMaxRate": {
       "type": "decimal",
       "required": true,
       "default": 0
@@ -38,16 +54,6 @@
       "required": true,
       "default": "0"
     },
-    "actualMinRate": {
-      "type": "decimal",
-      "required": true,
-      "default": 0
-    },
-    "actualMaxRate": {
-      "type": "decimal",
-      "required": true,
-      "default": 0
-    },
     "icon": {
       "type": "media",
       "multiple": false,
@@ -58,12 +64,6 @@
         "videos",
         "audios"
       ]
-    },
-    "maxInterestRate": {
-      "type": "decimal"
-    },
-    "strictInterestRate": {
-      "type": "decimal"
     }
   }
 }

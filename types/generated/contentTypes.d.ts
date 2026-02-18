@@ -831,7 +831,7 @@ export interface ApiFeedbackFeedback extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    comments: Schema.Attribute.String;
+    comments: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -841,13 +841,14 @@ export interface ApiFeedbackFeedback extends Struct.CollectionTypeSchema {
       'api::feedback.feedback'
     > &
       Schema.Attribute.Private;
-    message: Schema.Attribute.String;
-    name: Schema.Attribute.String;
-    phoneNumber: Schema.Attribute.String;
+    message: Schema.Attribute.String & Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    phoneNumber: Schema.Attribute.String & Schema.Attribute.Required;
     processed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     publishedAt: Schema.Attribute.DateTime;
-    surname: Schema.Attribute.String;
-    type: Schema.Attribute.Enumeration<['question', 'claim']>;
+    surname: Schema.Attribute.String & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<['question', 'claim']> &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1226,15 +1227,15 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiNewNew extends Struct.CollectionTypeSchema {
-  collectionName: 'news';
+export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
+  collectionName: 'news_pages';
   info: {
-    displayName: 'New';
-    pluralName: 'news';
-    singularName: 'new';
+    displayName: 'NewsPage';
+    pluralName: 'news-pages';
+    singularName: 'news-page';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -1246,30 +1247,24 @@ export interface ApiNewNew extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
-        };
-      }>;
-    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
         };
       }>;
     locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::new.new'>;
-    publishedAt: Schema.Attribute.DateTime;
-    showOnMainPage: Schema.Attribute.Boolean &
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::news-page.news-page'
+    >;
+    newsOptions: Schema.Attribute.DynamicZone<['news-option.news-option']> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1843,7 +1838,7 @@ declare module '@strapi/strapi' {
       'api::loan-detail.loan-detail': ApiLoanDetailLoanDetail;
       'api::loan-group.loan-group': ApiLoanGroupLoanGroup;
       'api::loan.loan': ApiLoanLoan;
-      'api::new.new': ApiNewNew;
+      'api::news-page.news-page': ApiNewsPageNewsPage;
       'api::purpose.purpose': ApiPurposePurpose;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

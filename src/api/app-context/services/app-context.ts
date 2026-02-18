@@ -1,3 +1,18 @@
+ type NewsOptionItem = {
+  showOnMainPage?: boolean;
+  [key: string]: any;
+};
+
+type NewsOptionBlock = {
+  newsOptionItems?: NewsOptionItem[];
+  [key: string]: any;
+};
+
+type NewsPage = {
+  newsOptions?: NewsOptionBlock[];
+  [key: string]: any;
+};
+
 module.exports = {
   async getAppContextData(locale) {
     try {
@@ -93,14 +108,26 @@ module.exports = {
         ).values(),
       ];
 
-      const news = await strapi.entityService.findMany("api::new.new", {
-        filters: {
-          locale: locale || "hy",
-        },
+      const newsPage = (await strapi.entityService.findMany("api::news-page.news-page", {
+        filters: { locale: locale || "hy" },
         populate: {
-          imageSrc: true,
+          newsOptions: {
+            on: {
+              "news-option.news-option": {
+                populate: {
+                  newsOptionItems: { populate: "*" },
+                },
+              },
+            },
+          },
         },
-      });
+      })) as NewsPage;
+
+      const news =
+        (newsPage?.newsOptions ?? [])
+          .flatMap((opt) => opt.newsOptionItems ?? [])
+          .filter((item) => item.showOnMainPage === true);
+
 
       const exchangeCurrencies = await strapi.entityService.findMany(
         "api::exchange-rate.exchange-rate",
@@ -143,7 +170,7 @@ module.exports = {
       console.log(e);
       return {
         languages: [],
-        globals: {},
+        globals: [],
         loanGroups: [],
         loans: [],
         news: [],
