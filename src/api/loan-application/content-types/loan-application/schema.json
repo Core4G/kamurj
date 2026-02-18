@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "loan_applications",
+  "info": {
+    "singularName": "loan-application",
+    "pluralName": "loan-applications",
+    "displayName": "LoanApplication"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::branch.branch"
+    },
+    "comments": {
+      "type": "blocks"
+    },
+    "isProcessed": {
+      "type": "boolean",
+      "default": false
+    },
+    "loan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::loan.loan"
+    }
+  }
+}

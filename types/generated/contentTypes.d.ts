@@ -982,6 +982,42 @@ export interface ApiLanguageLanguage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiLoanApplicationLoanApplication
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'loan_applications';
+  info: {
+    displayName: 'LoanApplication';
+    pluralName: 'loan-applications';
+    singularName: 'loan-application';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    branch: Schema.Attribute.Relation<'oneToOne', 'api::branch.branch'>;
+    comments: Schema.Attribute.Blocks;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.String;
+    isProcessed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    loan: Schema.Attribute.Relation<'oneToOne', 'api::loan.loan'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::loan-application.loan-application'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    phoneNumber: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    surname: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLoanDetailLoanDetail extends Struct.CollectionTypeSchema {
   collectionName: 'loan_details';
   info: {
@@ -1835,6 +1871,7 @@ declare module '@strapi/strapi' {
       'api::global.global': ApiGlobalGlobal;
       'api::gold-rate.gold-rate': ApiGoldRateGoldRate;
       'api::language.language': ApiLanguageLanguage;
+      'api::loan-application.loan-application': ApiLoanApplicationLoanApplication;
       'api::loan-detail.loan-detail': ApiLoanDetailLoanDetail;
       'api::loan-group.loan-group': ApiLoanGroupLoanGroup;
       'api::loan.loan': ApiLoanLoan;
