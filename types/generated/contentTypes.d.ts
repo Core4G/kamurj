@@ -622,16 +622,20 @@ export interface ApiBranchesPageBranchesPage extends Struct.SingleTypeSchema {
   options: {
     draftAndPublish: true;
   };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::branches-page.branches-page'
-    > &
-      Schema.Attribute.Private;
+    >;
     pageContent: Schema.Attribute.DynamicZone<
       [
         'section-list.section-list',
@@ -647,7 +651,12 @@ export interface ApiBranchesPageBranchesPage extends Struct.SingleTypeSchema {
         'branch-list.branch-list',
         'news-list.news-list',
       ]
-    >;
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
