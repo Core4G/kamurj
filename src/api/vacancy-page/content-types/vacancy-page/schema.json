@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "vacancy_pages",
+  "info": {
+    "singularName": "vacancy-page",
+    "pluralName": "vacancy-pages",
+    "displayName": "VacancyPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "pageContent": {
+      "type": "dynamiczone",
+      "components": [
+        "section-list.section-list",
+        "option-list.option-list",
+        "widget-list.widget-list",
+        "vacancy-list.vacancy-list",
+        "single-row-list.single-row-list",
+        "single-row.single-row",
+        "plain-text.plain-text",
+        "person-list.person-list",
+        "details-panel.details-panel",
+        "heading.heading",
+        "branch-list.branch-list",
+        "news-list.news-list"
+      ]
+    }
+  }
+}

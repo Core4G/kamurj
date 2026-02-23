@@ -1,0 +1,40 @@
+{
+  "collectionName": "components_details_panel_details_panels",
+  "info": {
+    "displayName": "detailsPanel"
+  },
+  "options": {},
+  "attributes": {
+    "iconSrc": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "isUrl": {
+      "type": "boolean",
+      "default": false
+    },
+    "url": {
+      "type": "text"
+    },
+    "tables": {
+      "type": "component",
+      "component": "data-table.data-table",
+      "repeatable": true
+    },
+    "rows": {
+      "type": "component",
+      "component": "single-row.single-row",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

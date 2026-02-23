@@ -1,5 +1,15 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface BranchListBranchList extends Struct.ComponentSchema {
+  collectionName: 'components_branch_list_branch_lists';
+  info: {
+    displayName: 'branchList';
+  };
+  attributes: {
+    branches: Schema.Attribute.Relation<'oneToMany', 'api::branch.branch'>;
+  };
+}
+
 export interface DataTableRowCellDataTableRowCell
   extends Struct.ComponentSchema {
   collectionName: 'components_data_table_row_cell_data_table_row_cells';
@@ -7,7 +17,7 @@ export interface DataTableRowCellDataTableRowCell
     displayName: 'dataTableRowCell';
   };
   attributes: {
-    colSpan: Schema.Attribute.Integer;
+    colSpan: Schema.Attribute.Integer & Schema.Attribute.Required;
     content: Schema.Attribute.Blocks;
   };
 }
@@ -36,42 +46,73 @@ export interface DataTableDataTable extends Struct.ComponentSchema {
   };
 }
 
-export interface NewsOptionItemNewsOptionItem extends Struct.ComponentSchema {
-  collectionName: 'components_news_option_item_news_option_items';
+export interface DetailsPanelDetailsPanel extends Struct.ComponentSchema {
+  collectionName: 'components_details_panel_details_panels';
   info: {
-    displayName: 'newsOptionItem';
+    displayName: 'detailsPanel';
   };
   attributes: {
-    dateUpdated: Schema.Attribute.Date;
+    iconSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    isUrl: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    rows: Schema.Attribute.Component<'single-row.single-row', true>;
+    tables: Schema.Attribute.Component<'data-table.data-table', true>;
+    title: Schema.Attribute.String;
+    url: Schema.Attribute.Text;
+  };
+}
+
+export interface HeadingHeading extends Struct.ComponentSchema {
+  collectionName: 'components_heading_headings';
+  info: {
+    displayName: 'heading';
+  };
+  attributes: {
     description: Schema.Attribute.Text;
     imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    showOnMainPage: Schema.Attribute.Boolean;
     title: Schema.Attribute.String;
   };
 }
 
-export interface NewsOptionNewsOption extends Struct.ComponentSchema {
-  collectionName: 'components_news_option_news_options';
+export interface LoanCurrencyLoanCurrency extends Struct.ComponentSchema {
+  collectionName: 'components_loan_currency_loan_currencies';
   info: {
-    displayName: 'newsOption';
+    displayName: 'loanCurrency';
   };
   attributes: {
-    newsOptionItems: Schema.Attribute.Component<
-      'news-option-item.news-option-item',
-      true
+    actualMaxRate: Schema.Attribute.Decimal;
+    actualMinRate: Schema.Attribute.Decimal;
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    maxDuration: Schema.Attribute.BigInteger;
+    maxInterestRate: Schema.Attribute.Decimal;
+    maxValue: Schema.Attribute.BigInteger;
+    minDuration: Schema.Attribute.BigInteger;
+    minInterestRate: Schema.Attribute.Decimal;
+    minValue: Schema.Attribute.BigInteger;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    strictInterestRate: Schema.Attribute.Decimal;
+  };
+}
+
+export interface MapMap extends Struct.ComponentSchema {
+  collectionName: 'components_map_maps';
+  info: {
+    displayName: 'map';
+  };
+  attributes: {
+    branches: Schema.Attribute.Relation<'oneToMany', 'api::branch.branch'>;
+  };
+}
+
+export interface NewsListNewsList extends Struct.ComponentSchema {
+  collectionName: 'components_news_list_news_lists';
+  info: {
+    displayName: 'newsList';
+  };
+  attributes: {
+    news_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::news-item.news-item'
     >;
-    title: Schema.Attribute.String;
-  };
-}
-
-export interface OptionItemWidgetOptionItemWidget
-  extends Struct.ComponentSchema {
-  collectionName: 'components_option_item_widget_option_item_widgets';
-  info: {
-    displayName: 'optionItemWidget';
-  };
-  attributes: {
-    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
   };
 }
 
@@ -81,11 +122,23 @@ export interface OptionItemOptionItem extends Struct.ComponentSchema {
     displayName: 'optionItem';
   };
   attributes: {
-    OptionItemWidget: Schema.Attribute.Component<
-      'option-item-widget.option-item-widget',
+    detailsPanel: Schema.Attribute.Component<
+      'details-panel.details-panel',
+      false
+    >;
+    heading: Schema.Attribute.Component<'heading.heading', true>;
+    map: Schema.Attribute.Component<'map.map', false>;
+    newsList: Schema.Attribute.Component<'news-list.news-list', false>;
+    personList: Schema.Attribute.Component<'person-list.person-list', false>;
+    plainText: Schema.Attribute.Component<'plain-text.plain-text', false>;
+    singleRow: Schema.Attribute.Component<'single-row.single-row', false>;
+    singleRowList: Schema.Attribute.Component<'single-row.single-row', true>;
+    title: Schema.Attribute.String;
+    vacancyList: Schema.Attribute.Component<'vacancy-list.vacancy-list', false>;
+    widgetList: Schema.Attribute.Component<
+      'widget-list-item.widget-list-item',
       true
     >;
-    title: Schema.Attribute.String;
   };
 }
 
@@ -133,14 +186,86 @@ export interface PlainTextPlainText extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionListItemSectionListItem extends Struct.ComponentSchema {
+  collectionName: 'components_section_list_item_section_list_items';
+  info: {
+    displayName: 'sectionListItem';
+  };
+  attributes: {
+    detailsPanel: Schema.Attribute.Component<
+      'details-panel.details-panel',
+      false
+    >;
+    heading: Schema.Attribute.Component<'heading.heading', false>;
+    newsList: Schema.Attribute.Component<'news-list.news-list', false>;
+    optionList: Schema.Attribute.Component<'option-list.option-list', false>;
+    personList: Schema.Attribute.Component<'person-list.person-list', false>;
+    plainText: Schema.Attribute.Component<'plain-text.plain-text', false>;
+    singleRow: Schema.Attribute.Component<'single-row.single-row', false>;
+    singleRowList: Schema.Attribute.Component<'single-row.single-row', true>;
+    title: Schema.Attribute.String;
+    vacancyList: Schema.Attribute.Component<'vacancy-list.vacancy-list', false>;
+    widgetList: Schema.Attribute.Component<
+      'widget-list-item.widget-list-item',
+      true
+    >;
+  };
+}
+
+export interface SectionListSectionList extends Struct.ComponentSchema {
+  collectionName: 'components_section_list_section_lists';
+  info: {
+    displayName: 'sectionList';
+  };
+  attributes: {
+    sections: Schema.Attribute.Component<
+      'section-list-item.section-list-item',
+      true
+    >;
+  };
+}
+
+export interface SingleRowListSingleRowList extends Struct.ComponentSchema {
+  collectionName: 'components_single_row_list_single_row_lists';
+  info: {
+    displayName: 'singleRowList';
+  };
+  attributes: {
+    rows: Schema.Attribute.Component<'single-row.single-row', true>;
+  };
+}
+
 export interface SingleRowSingleRow extends Struct.ComponentSchema {
   collectionName: 'components_single_row_single_rows';
   info: {
     displayName: 'singleRow';
   };
   attributes: {
-    content: Schema.Attribute.Blocks;
-    fileSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    iconSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    isUrl: Schema.Attribute.Boolean;
+    title: Schema.Attribute.Blocks;
+    url: Schema.Attribute.Text;
+  };
+}
+
+export interface VacancyListVacancyList extends Struct.ComponentSchema {
+  collectionName: 'components_vacancy_list_vacancy_lists';
+  info: {
+    displayName: 'vacancyList';
+  };
+  attributes: {
+    vacancies: Schema.Attribute.Component<'vacancy.vacancy', true>;
+  };
+}
+
+export interface VacancyVacancy extends Struct.ComponentSchema {
+  collectionName: 'components_vacancy_vacancies';
+  info: {
+    displayName: 'vacancy';
+  };
+  attributes: {
+    conent: Schema.Attribute.Component<'plain-text.plain-text', true>;
+    title: Schema.Attribute.String;
   };
 }
 
@@ -172,18 +297,26 @@ export interface WidgetListWidgetList extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'branch-list.branch-list': BranchListBranchList;
       'data-table-row-cell.data-table-row-cell': DataTableRowCellDataTableRowCell;
       'data-table-row.data-table-row': DataTableRowDataTableRow;
       'data-table.data-table': DataTableDataTable;
-      'news-option-item.news-option-item': NewsOptionItemNewsOptionItem;
-      'news-option.news-option': NewsOptionNewsOption;
-      'option-item-widget.option-item-widget': OptionItemWidgetOptionItemWidget;
+      'details-panel.details-panel': DetailsPanelDetailsPanel;
+      'heading.heading': HeadingHeading;
+      'loan-currency.loan-currency': LoanCurrencyLoanCurrency;
+      'map.map': MapMap;
+      'news-list.news-list': NewsListNewsList;
       'option-item.option-item': OptionItemOptionItem;
       'option-list.option-list': OptionListOptionList;
       'person-item.person-item': PersonItemPersonItem;
       'person-list.person-list': PersonListPersonList;
       'plain-text.plain-text': PlainTextPlainText;
+      'section-list-item.section-list-item': SectionListItemSectionListItem;
+      'section-list.section-list': SectionListSectionList;
+      'single-row-list.single-row-list': SingleRowListSingleRowList;
       'single-row.single-row': SingleRowSingleRow;
+      'vacancy-list.vacancy-list': VacancyListVacancyList;
+      'vacancy.vacancy': VacancyVacancy;
       'widget-list-item.widget-list-item': WidgetListItemWidgetListItem;
       'widget-list.widget-list': WidgetListWidgetList;
     }

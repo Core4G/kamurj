@@ -1,10 +1,15 @@
- type NewsOptionItem = {
+type NewsOptionItem = {
   showOnMainPage?: boolean;
   [key: string]: any;
 };
 
+type OptionItem = {
+  newsList?: NewsOptionItem[];
+  [key: string]: any;
+};
+
 type NewsOptionBlock = {
-  newsOptionItems?: NewsOptionItem[];
+  optionItems?: OptionItem[];
   [key: string]: any;
 };
 
@@ -47,87 +52,109 @@ module.exports = {
           locale: locale || "hy"
         },
         populate: {
+          purpose: true,
           loan_group: true,
           mainImageSrc: true,
           widgetImageSrc: true,
           iconSrc: true,
-          loan_currencies: { populate: { icon: true } },
+          loan_currencies: {
+            on: {
+              "loan-currency.loan-currency": {
+                populate: {
+                  icon: true,
+                },
+              },
+            },
+          },
           terms: {
-            populate: {
-              termData: {
-                on: {
-                  "plain-text.plain-text": {
-                    populate: "*",
-                  },
-                  "data-table.data-table": {
+            on: {
+              "details-panel.details-panel": {
+                populate: {
+                  iconSrc: true,
+                  tables: {
                     populate: {
-                      rows:{
+                      rows: {
                         populate: {
-                          cells: {
-                            populate: "*"
-                          }
-                        }
-                      }
+                          cells: true,
+                        },
+                      },
                     },
                   },
-                  "single-row.single-row": {
+                  rows: {
                     populate: {
-                      fileSrc: true
+                      iconSrc: true,
                     },
                   },
                 },
               },
-              fileSrc: true
-      }
-           },
-        },
-      });
-
-      const filteredLoanCurrencies: Record<string, any[]> = {};
-
-      loans.forEach((loan) => {
-        if (!!filteredLoanCurrencies[loan["loan_group"].id]) {
-          filteredLoanCurrencies[loan["loan_group"].id].push(
-            ...loan["loan_currencies"],
-          );
-        } else {
-          filteredLoanCurrencies[loan["loan_group"].id as string] = [
-            ...loan["loan_currencies"],
-          ] as any[];
-        }
-        if (!!filteredLoanCurrencies["all"]) {
-          filteredLoanCurrencies["all"].push(...loan["loan_currencies"]);
-        } else {
-          filteredLoanCurrencies["all"] = [...loan["loan_currencies"]] as any[];
-        }
-      });
-
-      filteredLoanCurrencies["all"] = [
-        ...new Map(
-          filteredLoanCurrencies["all"].map((item) => [item.id, item]),
-        ).values(),
-      ];
-
-      const newsPage = (await strapi.entityService.findMany("api::news-page.news-page", {
-        filters: { locale: locale || "hy" },
-        populate: {
-          newsOptions: {
-            on: {
-              "news-option.news-option": {
+              "single-row-list.single-row-list": {
                 populate: {
-                  newsOptionItems: { populate: "*" },
+                  rows: {
+                    populate: {
+                      iconSrc: true,
+                    },
+                  },
+                },
+              },
+              "single-row.single-row": {
+                populate: {
+                  iconSrc: true,
+                },
+              },
+            },
+          },
+          docs: {
+            on: {
+              "single-row.single-row": {
+                populate: {
+                  iconSrc: true,
                 },
               },
             },
           },
         },
-      })) as NewsPage;
+      });
 
-      const news =
-        (newsPage?.newsOptions ?? [])
-          .flatMap((opt) => opt.newsOptionItems ?? [])
-          .filter((item) => item.showOnMainPage === true);
+      const filteredLoanCurrencies: Record<string, any[]> = {};
 
+      loans.forEach((loan: any) => {
+        const groupId = loan?.loan_group?.id;
+        const loanCurrencies = loan?.loan_currencies || [];
+
+        if (!loanCurrencies.length) {
+          return;
+        }
+
+        if (groupId !== undefined && groupId !== null) {
+          if (!filteredLoanCurrencies[groupId]) {
+            filteredLoanCurrencies[groupId] = [];
+          }
+          filteredLoanCurrencies[groupId].push(...loanCurrencies);
+        }
+
+        if (!filteredLoanCurrencies["all"]) {
+          filteredLoanCurrencies["all"] = [];
+        }
+        filteredLoanCurrencies["all"].push(...loanCurrencies);
+      });
+
+      Object.keys(filteredLoanCurrencies).forEach((key) => {
+        filteredLoanCurrencies[key] = [
+          ...new Map(
+            filteredLoanCurrencies[key].map((item) => [item?.id || `${item?.name}-${item?.__component}`, item]),
+          ).values(),
+        ];
+      });
+
+      const news = await strapi.entityService.findMany("api::news-item.news-item", {
+        filters: {
+          locale: locale || "hy",
+        },
+        sort: { dateUpdated: "desc" },
+        populate: {
+          imageSrc: true,
+        },
+      });
 
       const exchangeCurrencies = await strapi.entityService.findMany(
         "api::exchange-rate.exchange-rate",
@@ -135,13 +162,14 @@ module.exports = {
           filters: {
             locale: "hy",
           },
+          sort: { order: "asc" },
         },
       );
 
       const exchangeCurrenciesGold = await strapi.entityService.findMany(
         "api::gold-rate.gold-rate",
         {
-          sort: { id: "desc" },
+          sort: { id: "asc" },
         }
       );
       

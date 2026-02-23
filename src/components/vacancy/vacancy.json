@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_vacancy_vacancies",
+  "info": {
+    "displayName": "vacancy"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "conent": {
+      "type": "component",
+      "component": "plain-text.plain-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

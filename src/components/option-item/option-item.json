@@ -8,10 +8,55 @@
     "title": {
       "type": "string"
     },
-    "OptionItemWidget": {
+    "heading": {
       "type": "component",
-      "component": "option-item-widget.option-item-widget",
+      "component": "heading.heading",
       "repeatable": true
+    },
+    "singleRowList": {
+      "type": "component",
+      "component": "single-row.single-row",
+      "repeatable": true
+    },
+    "singleRow": {
+      "type": "component",
+      "component": "single-row.single-row",
+      "repeatable": false
+    },
+    "widgetList": {
+      "type": "component",
+      "component": "widget-list-item.widget-list-item",
+      "repeatable": true
+    },
+    "personList": {
+      "type": "component",
+      "component": "person-list.person-list",
+      "repeatable": false
+    },
+    "detailsPanel": {
+      "type": "component",
+      "component": "details-panel.details-panel",
+      "repeatable": false
+    },
+    "vacancyList": {
+      "type": "component",
+      "component": "vacancy-list.vacancy-list",
+      "repeatable": false
+    },
+    "newsList": {
+      "type": "component",
+      "component": "news-list.news-list",
+      "repeatable": false
+    },
+    "map": {
+      "type": "component",
+      "component": "map.map",
+      "repeatable": false
+    },
+    "plainText": {
+      "type": "component",
+      "component": "plain-text.plain-text",
+      "repeatable": false
     }
   },
   "config": {}

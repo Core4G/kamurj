@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_vacancy_list_vacancy_lists",
+  "info": {
+    "displayName": "vacancyList"
+  },
+  "options": {},
+  "attributes": {
+    "vacancies": {
+      "type": "component",
+      "component": "vacancy.vacancy",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

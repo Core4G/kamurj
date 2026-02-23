@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_section_list_section_lists",
+  "info": {
+    "displayName": "sectionList"
+  },
+  "options": {},
+  "attributes": {
+    "sections": {
+      "type": "component",
+      "component": "section-list-item.section-list-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -430,63 +430,12 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAboutUsSectionAboutUsSection
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'about_us_sections';
+export interface ApiAboutUsPageAboutUsPage extends Struct.SingleTypeSchema {
+  collectionName: 'about_us_pages';
   info: {
-    displayName: 'AboutUsSection';
-    pluralName: 'about-us-sections';
-    singularName: 'about-us-section';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    blocks: Schema.Attribute.DynamicZone<
-      [
-        'option-list.option-list',
-        'person-list.person-list',
-        'plain-text.plain-text',
-        'widget-list.widget-list',
-      ]
-    > &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::about-us-section.about-us-section'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiBondTermBondTerm extends Struct.CollectionTypeSchema {
-  collectionName: 'bond_terms';
-  info: {
-    displayName: 'BondTerm';
-    pluralName: 'bond-terms';
-    singularName: 'bond-term';
+    displayName: 'AboutUsPage';
+    pluralName: 'about-us-pages';
+    singularName: 'about-us-page';
   };
   options: {
     draftAndPublish: true;
@@ -500,23 +449,25 @@ export interface ApiBondTermBondTerm extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    fileSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::bond-term.bond-term'
+      'api::about-us-page.about-us-page'
     >;
-    publishedAt: Schema.Attribute.DateTime;
-    termData: Schema.Attribute.DynamicZone<
+    pageContent: Schema.Attribute.DynamicZone<
       [
-        'data-table.data-table',
-        'plain-text.plain-text',
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
         'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -524,12 +475,59 @@ export interface ApiBondTermBondTerm extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    title: Schema.Attribute.String &
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiBondsPageBondsPage extends Struct.SingleTypeSchema {
+  collectionName: 'bonds_pages';
+  info: {
+    displayName: 'BondsPage';
+    pluralName: 'bonds-pages';
+    singularName: 'bonds-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::bonds-page.bonds-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -614,6 +612,49 @@ export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBranchesPageBranchesPage extends Struct.SingleTypeSchema {
+  collectionName: 'branches_pages';
+  info: {
+    displayName: 'BranchesPage';
+    pluralName: 'branches-pages';
+    singularName: 'branches-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::branches-page.branches-page'
+    > &
+      Schema.Attribute.Private;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCallBackRequestCallBackRequest
   extends Struct.CollectionTypeSchema {
   collectionName: 'call_back_requests';
@@ -647,64 +688,44 @@ export interface ApiCallBackRequestCallBackRequest
   };
 }
 
-export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
-  collectionName: 'currencies';
+export interface ApiCodeSnippetCodeSnippet extends Struct.CollectionTypeSchema {
+  collectionName: 'code_snippets';
   info: {
-    displayName: 'LoanCurrency';
-    pluralName: 'currencies';
-    singularName: 'currency';
+    displayName: 'CodeSnippet';
+    pluralName: 'code-snippets';
+    singularName: 'code-snippet';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
-    actualMaxRate: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
-    actualMinRate: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
+    code: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::currency.currency'
+      'api::code-snippet.code-snippet'
     > &
       Schema.Attribute.Private;
-    maxDuration: Schema.Attribute.BigInteger &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'0'>;
-    maxInterestRate: Schema.Attribute.Decimal;
-    maxValue: Schema.Attribute.BigInteger &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'0'>;
-    minDuration: Schema.Attribute.BigInteger;
-    minInterestRate: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
-    minValue: Schema.Attribute.BigInteger;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    strictInterestRate: Schema.Attribute.Decimal;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
   };
 }
 
-export interface ApiDocDoc extends Struct.CollectionTypeSchema {
-  collectionName: 'docs';
+export interface ApiConsumerPageConsumerPage extends Struct.SingleTypeSchema {
+  collectionName: 'consumer_pages';
   info: {
-    displayName: 'LoanDoc';
-    pluralName: 'docs';
-    singularName: 'doc';
+    displayName: 'ConsumerPage';
+    pluralName: 'consumer-pages';
+    singularName: 'consumer-page';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -715,23 +736,33 @@ export interface ApiDocDoc extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    fileSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::doc.doc'>;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::consumer-page.consumer-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -790,6 +821,14 @@ export interface ApiExchangeRateExchangeRate
       'oneToMany',
       'api::exchange-rate.exchange-rate'
     >;
+    order: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     publishedAt: Schema.Attribute.DateTime;
     sell: Schema.Attribute.Decimal &
       Schema.Attribute.Required &
@@ -814,6 +853,58 @@ export interface ApiExchangeRateExchangeRate
           localized: true;
         };
       }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFaqPageFaqPage extends Struct.SingleTypeSchema {
+  collectionName: 'faq_pages';
+  info: {
+    displayName: 'FaqPage';
+    pluralName: 'faq-pages';
+    singularName: 'faq-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::faq-page.faq-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -931,6 +1022,65 @@ export interface ApiGoldRateGoldRate extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
+  collectionName: 'home_pages';
+  info: {
+    displayName: 'HomePage';
+    pluralName: 'home-pages';
+    singularName: 'home-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    calculaterSectionText: Schema.Attribute.Blocks &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    calculatorSectionImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    exchange_rates: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::exchange-rate.exchange-rate'
+    >;
+    gold_rates: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::gold-rate.gold-rate'
+    >;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::home-page.home-page'
+    >;
+    mainLoans: Schema.Attribute.Relation<'oneToMany', 'api::loan.loan'>;
+    publishedAt: Schema.Attribute.DateTime;
+    top_news: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::news-item.news-item'
+    >;
+    topLoans: Schema.Attribute.Relation<'oneToMany', 'api::loan.loan'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLanguageLanguage extends Struct.CollectionTypeSchema {
   collectionName: 'languages';
   info: {
@@ -982,6 +1132,58 @@ export interface ApiLanguageLanguage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiLegalActLegalAct extends Struct.SingleTypeSchema {
+  collectionName: 'legal_acts';
+  info: {
+    displayName: 'LegalActsPage';
+    pluralName: 'legal-acts';
+    singularName: 'legal-act';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::legal-act.legal-act'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLoanApplicationLoanApplication
   extends Struct.CollectionTypeSchema {
   collectionName: 'loan_applications';
@@ -1012,62 +1214,6 @@ export interface ApiLoanApplicationLoanApplication
     phoneNumber: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     surname: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiLoanDetailLoanDetail extends Struct.CollectionTypeSchema {
-  collectionName: 'loan_details';
-  info: {
-    displayName: 'LoanTerm';
-    pluralName: 'loan-details';
-    singularName: 'loan-detail';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    fileSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::loan-detail.loan-detail'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    termData: Schema.Attribute.DynamicZone<
-      [
-        'data-table.data-table',
-        'plain-text.plain-text',
-        'single-row.single-row',
-      ]
-    > &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1168,7 +1314,7 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
     singularName: 'loan';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -1186,7 +1332,12 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    docs: Schema.Attribute.Relation<'oneToMany', 'api::doc.doc'>;
+    docs: Schema.Attribute.DynamicZone<['single-row.single-row']> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     iconSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1202,10 +1353,14 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<false>;
-    loan_currencies: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::currency.currency'
-    >;
+    loan_currencies: Schema.Attribute.DynamicZone<
+      ['loan-currency.loan-currency']
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     loan_group: Schema.Attribute.Relation<
       'manyToOne',
       'api::loan-group.loan-group'
@@ -1244,10 +1399,18 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<false>;
-    terms: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::loan-detail.loan-detail'
-    >;
+    terms: Schema.Attribute.DynamicZone<
+      [
+        'details-panel.details-panel',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1260,6 +1423,120 @@ export interface ApiLoanLoan extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
+  };
+}
+
+export interface ApiMorePageMorePage extends Struct.SingleTypeSchema {
+  collectionName: 'more_pages';
+  info: {
+    displayName: 'MorePage';
+    pluralName: 'more-pages';
+    singularName: 'more-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::more-page.more-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiNewsItemNewsItem extends Struct.CollectionTypeSchema {
+  collectionName: 'news_items';
+  info: {
+    displayName: 'NewsItem';
+    pluralName: 'news-items';
+    singularName: 'news-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dateUpdated: Schema.Attribute.DateTime &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::news-item.news-item'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    showOnMainPage: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1282,30 +1559,85 @@ export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::news-page.news-page'
     >;
-    newsOptions: Schema.Attribute.DynamicZone<['news-option.news-option']> &
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
     publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String &
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiOtherPageOtherPage extends Struct.SingleTypeSchema {
+  collectionName: 'other_pages';
+  info: {
+    displayName: 'OtherPage';
+    pluralName: 'other-pages';
+    singularName: 'other-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::other-page.other-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1343,6 +1675,206 @@ export interface ApiPurposePurpose extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiReportsPageReportsPage extends Struct.SingleTypeSchema {
+  collectionName: 'reports_pages';
+  info: {
+    displayName: 'ReportsPage';
+    pluralName: 'reports-pages';
+    singularName: 'reports-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::reports-page.reports-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSiteMapPageSiteMapPage extends Struct.SingleTypeSchema {
+  collectionName: 'site_map_pages';
+  info: {
+    displayName: 'SiteMapPage';
+    pluralName: 'site-map-pages';
+    singularName: 'site-map-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::site-map-page.site-map-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStakeHolderPageStakeHolderPage
+  extends Struct.SingleTypeSchema {
+  collectionName: 'stake_holder_pages';
+  info: {
+    displayName: 'StakeHolderPage';
+    pluralName: 'stake-holder-pages';
+    singularName: 'stake-holder-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::stake-holder-page.stake-holder-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiVacancyPageVacancyPage extends Struct.SingleTypeSchema {
+  collectionName: 'vacancy_pages';
+  info: {
+    displayName: 'VacancyPage';
+    pluralName: 'vacancy-pages';
+    singularName: 'vacancy-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::vacancy-page.vacancy-page'
+    > &
+      Schema.Attribute.Private;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'widget-list.widget-list',
+        'vacancy-list.vacancy-list',
+        'single-row-list.single-row-list',
+        'single-row.single-row',
+        'plain-text.plain-text',
+        'person-list.person-list',
+        'details-panel.details-panel',
+        'heading.heading',
+        'branch-list.branch-list',
+        'news-list.news-list',
+      ]
+    >;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1860,23 +2392,33 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::about-us-section.about-us-section': ApiAboutUsSectionAboutUsSection;
-      'api::bond-term.bond-term': ApiBondTermBondTerm;
+      'api::about-us-page.about-us-page': ApiAboutUsPageAboutUsPage;
+      'api::bonds-page.bonds-page': ApiBondsPageBondsPage;
       'api::branch.branch': ApiBranchBranch;
+      'api::branches-page.branches-page': ApiBranchesPageBranchesPage;
       'api::call-back-request.call-back-request': ApiCallBackRequestCallBackRequest;
-      'api::currency.currency': ApiCurrencyCurrency;
-      'api::doc.doc': ApiDocDoc;
+      'api::code-snippet.code-snippet': ApiCodeSnippetCodeSnippet;
+      'api::consumer-page.consumer-page': ApiConsumerPageConsumerPage;
       'api::exchange-rate.exchange-rate': ApiExchangeRateExchangeRate;
+      'api::faq-page.faq-page': ApiFaqPageFaqPage;
       'api::feedback.feedback': ApiFeedbackFeedback;
       'api::global.global': ApiGlobalGlobal;
       'api::gold-rate.gold-rate': ApiGoldRateGoldRate;
+      'api::home-page.home-page': ApiHomePageHomePage;
       'api::language.language': ApiLanguageLanguage;
+      'api::legal-act.legal-act': ApiLegalActLegalAct;
       'api::loan-application.loan-application': ApiLoanApplicationLoanApplication;
-      'api::loan-detail.loan-detail': ApiLoanDetailLoanDetail;
       'api::loan-group.loan-group': ApiLoanGroupLoanGroup;
       'api::loan.loan': ApiLoanLoan;
+      'api::more-page.more-page': ApiMorePageMorePage;
+      'api::news-item.news-item': ApiNewsItemNewsItem;
       'api::news-page.news-page': ApiNewsPageNewsPage;
+      'api::other-page.other-page': ApiOtherPageOtherPage;
       'api::purpose.purpose': ApiPurposePurpose;
+      'api::reports-page.reports-page': ApiReportsPageReportsPage;
+      'api::site-map-page.site-map-page': ApiSiteMapPageSiteMapPage;
+      'api::stake-holder-page.stake-holder-page': ApiStakeHolderPageStakeHolderPage;
+      'api::vacancy-page.vacancy-page': ApiVacancyPageVacancyPage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

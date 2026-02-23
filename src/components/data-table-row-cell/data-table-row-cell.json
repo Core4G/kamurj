@@ -9,7 +9,8 @@
       "type": "blocks"
     },
     "colSpan": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     }
   },
   "config": {}

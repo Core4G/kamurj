@@ -1,0 +1,67 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "HomePage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "mainLoans": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::loan.loan"
+    },
+    "topLoans": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::loan.loan"
+    },
+    "top_news": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::news-item.news-item"
+    },
+    "exchange_rates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::exchange-rate.exchange-rate"
+    },
+    "gold_rates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::gold-rate.gold-rate"
+    },
+    "calculatorSectionImage": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "calculaterSectionText": {
+      "type": "blocks",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

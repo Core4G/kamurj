@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_map_maps",
+  "info": {
+    "displayName": "map"
+  },
+  "options": {},
+  "attributes": {
+    "branches": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::branch.branch"
+    }
+  },
+  "config": {}
+}

@@ -15,23 +15,7 @@
     }
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "description": {
-      "type": "text",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "newsOptions": {
+    "pageContent": {
       "type": "dynamiczone",
       "pluginOptions": {
         "i18n": {
@@ -39,7 +23,18 @@
         }
       },
       "components": [
-        "news-option.news-option"
+        "section-list.section-list",
+        "option-list.option-list",
+        "widget-list.widget-list",
+        "vacancy-list.vacancy-list",
+        "single-row-list.single-row-list",
+        "single-row.single-row",
+        "plain-text.plain-text",
+        "person-list.person-list",
+        "details-panel.details-panel",
+        "heading.heading",
+        "branch-list.branch-list",
+        "news-list.news-list"
       ]
     }
   }

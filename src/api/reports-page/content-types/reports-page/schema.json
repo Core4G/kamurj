@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "reports_pages",
+  "info": {
+    "singularName": "reports-page",
+    "pluralName": "reports-pages",
+    "displayName": "ReportsPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "pageContent": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "section-list.section-list",
+        "option-list.option-list",
+        "widget-list.widget-list",
+        "vacancy-list.vacancy-list",
+        "single-row-list.single-row-list",
+        "single-row.single-row",
+        "plain-text.plain-text",
+        "person-list.person-list",
+        "details-panel.details-panel",
+        "heading.heading",
+        "branch-list.branch-list",
+        "news-list.news-list"
+      ]
+    }
+  }
+}

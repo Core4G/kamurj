@@ -7,7 +7,7 @@
     "displayName": "Loan"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -74,21 +74,6 @@
       "relation": "oneToOne",
       "target": "api::purpose.purpose"
     },
-    "terms": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::loan-detail.loan-detail"
-    },
-    "docs": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::doc.doc"
-    },
-    "loan_currencies": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::currency.currency"
-    },
     "iconSrc": {
       "type": "media",
       "pluginOptions": {
@@ -134,6 +119,41 @@
         }
       },
       "default": false
+    },
+    "terms": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "details-panel.details-panel",
+        "single-row-list.single-row-list",
+        "single-row.single-row"
+      ]
+    },
+    "docs": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "single-row.single-row"
+      ]
+    },
+    "loan_currencies": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "loan-currency.loan-currency"
+      ]
     }
   }
 }

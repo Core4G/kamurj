@@ -1,0 +1,51 @@
+{
+  "collectionName": "components_loan_currency_loan_currencies",
+  "info": {
+    "displayName": "loanCurrency"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "strictInterestRate": {
+      "type": "decimal"
+    },
+    "minInterestRate": {
+      "type": "decimal"
+    },
+    "maxInterestRate": {
+      "type": "decimal"
+    },
+    "actualMinRate": {
+      "type": "decimal"
+    },
+    "actualMaxRate": {
+      "type": "decimal"
+    },
+    "minDuration": {
+      "type": "biginteger"
+    },
+    "maxDuration": {
+      "type": "biginteger"
+    },
+    "minValue": {
+      "type": "biginteger"
+    },
+    "maxValue": {
+      "type": "biginteger"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

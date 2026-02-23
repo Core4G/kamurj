@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_single_row_list_single_row_lists",
+  "info": {
+    "displayName": "singleRowList"
+  },
+  "options": {},
+  "attributes": {
+    "rows": {
+      "type": "component",
+      "component": "single-row.single-row",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_branch_list_branch_lists",
+  "info": {
+    "displayName": "branchList"
+  },
+  "options": {},
+  "attributes": {
+    "branches": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::branch.branch"
+    }
+  },
+  "config": {}
+}

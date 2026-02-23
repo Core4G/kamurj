@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_news_list_news_lists",
+  "info": {
+    "displayName": "newsList"
+  },
+  "options": {},
+  "attributes": {
+    "news_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::news-item.news-item"
+    }
+  },
+  "config": {}
+}
