@@ -8,55 +8,10 @@
     "title": {
       "type": "string"
     },
-    "optionList": {
+    "sectionItemBlocks": {
       "type": "component",
-      "component": "option-list.option-list",
-      "repeatable": false
-    },
-    "heading": {
-      "type": "component",
-      "component": "heading.heading",
-      "repeatable": false
-    },
-    "widgetList": {
-      "type": "component",
-      "component": "widget-list-item.widget-list-item",
+      "component": "section-list-item-block.section-list-item-block",
       "repeatable": true
-    },
-    "personList": {
-      "type": "component",
-      "component": "person-list.person-list",
-      "repeatable": false
-    },
-    "singleRowList": {
-      "type": "component",
-      "component": "single-row.single-row",
-      "repeatable": true
-    },
-    "singleRow": {
-      "type": "component",
-      "component": "single-row.single-row",
-      "repeatable": false
-    },
-    "detailsPanel": {
-      "type": "component",
-      "component": "details-panel.details-panel",
-      "repeatable": false
-    },
-    "newsList": {
-      "type": "component",
-      "component": "news-list.news-list",
-      "repeatable": false
-    },
-    "plainText": {
-      "type": "component",
-      "component": "plain-text.plain-text",
-      "repeatable": false
-    },
-    "vacancyList": {
-      "type": "component",
-      "component": "vacancy-list.vacancy-list",
-      "repeatable": false
     }
   },
   "config": {}

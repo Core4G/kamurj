@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_bullet_chain_list_bullet_chain_lists",
+  "info": {
+    "displayName": "bulletChainList"
+  },
+  "options": {},
+  "attributes": {
+    "plainText": {
+      "type": "component",
+      "component": "plain-text.plain-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -8,5 +8,13 @@ module.exports = {
                 auth: false,
             },
         },
+        {
+            method: 'GET',
+            path: '/page-data/:pageName',
+            handler: 'app-context.getPageData',
+            config: {
+                auth: false,
+            },
+        },
     ],
 };

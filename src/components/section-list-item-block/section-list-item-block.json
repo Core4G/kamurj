@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_section_list_item_block_section_list_item_blocks",
+  "info": {
+    "displayName": "sectionListItemBlock"
+  },
+  "options": {},
+  "attributes": {
+    "optionList": {
+      "type": "component",
+      "component": "option-list.option-list",
+      "repeatable": false
+    },
+    "combinedContent": {
+      "type": "component",
+      "component": "combined-content.combined-content",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

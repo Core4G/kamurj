@@ -458,16 +458,7 @@ export interface ApiAboutUsPageAboutUsPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -510,16 +501,7 @@ export interface ApiBondsPageBondsPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -640,16 +622,7 @@ export interface ApiBranchesPageBranchesPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -754,16 +727,7 @@ export interface ApiConsumerPageConsumerPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -896,16 +860,7 @@ export interface ApiFaqPageFaqPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1169,16 +1124,7 @@ export interface ApiLegalActLegalAct extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1463,16 +1409,7 @@ export interface ApiMorePageMorePage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1577,16 +1514,7 @@ export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1629,16 +1557,7 @@ export interface ApiOtherPageOtherPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1719,16 +1638,7 @@ export interface ApiReportsPageReportsPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1771,16 +1681,7 @@ export interface ApiSiteMapPageSiteMapPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1824,16 +1725,7 @@ export interface ApiStakeHolderPageStakeHolderPage
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1872,16 +1764,7 @@ export interface ApiVacancyPageVacancyPage extends Struct.SingleTypeSchema {
       [
         'section-list.section-list',
         'option-list.option-list',
-        'widget-list.widget-list',
-        'vacancy-list.vacancy-list',
-        'single-row-list.single-row-list',
-        'single-row.single-row',
-        'plain-text.plain-text',
-        'person-list.person-list',
-        'details-panel.details-panel',
-        'heading.heading',
-        'branch-list.branch-list',
-        'news-list.news-list',
+        'combined-content.combined-content',
       ]
     >;
     publishedAt: Schema.Attribute.DateTime;

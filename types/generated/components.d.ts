@@ -10,6 +10,46 @@ export interface BranchListBranchList extends Struct.ComponentSchema {
   };
 }
 
+export interface BulletChainListBulletChainList extends Struct.ComponentSchema {
+  collectionName: 'components_bullet_chain_list_bullet_chain_lists';
+  info: {
+    displayName: 'bulletChainList';
+  };
+  attributes: {
+    plainText: Schema.Attribute.Component<'plain-text.plain-text', true>;
+  };
+}
+
+export interface CombinedContentCombinedContent extends Struct.ComponentSchema {
+  collectionName: 'components_combined_content_combined_contents';
+  info: {
+    displayName: 'combinedContent';
+  };
+  attributes: {
+    branchList: Schema.Attribute.Component<'branch-list.branch-list', false>;
+    bulletChain: Schema.Attribute.Component<
+      'bullet-chain-list.bullet-chain-list',
+      false
+    >;
+    detailsPanel: Schema.Attribute.Component<
+      'details-panel.details-panel',
+      false
+    >;
+    heading: Schema.Attribute.Component<'heading.heading', false>;
+    map: Schema.Attribute.Component<'map.map', false>;
+    newsList: Schema.Attribute.Component<'news-list.news-list', false>;
+    personList: Schema.Attribute.Component<'person-list.person-list', false>;
+    plainText: Schema.Attribute.Component<'plain-text.plain-text', false>;
+    singleRow: Schema.Attribute.Component<'single-row.single-row', false>;
+    singleRowList: Schema.Attribute.Component<
+      'single-row-list.single-row-list',
+      false
+    >;
+    vacancyList: Schema.Attribute.Component<'vacancy-list.vacancy-list', false>;
+    widgetList: Schema.Attribute.Component<'widget-list.widget-list', false>;
+  };
+}
+
 export interface DataTableRowCellDataTableRowCell
   extends Struct.ComponentSchema {
   collectionName: 'components_data_table_row_cell_data_table_row_cells';
@@ -122,23 +162,11 @@ export interface OptionItemOptionItem extends Struct.ComponentSchema {
     displayName: 'optionItem';
   };
   attributes: {
-    detailsPanel: Schema.Attribute.Component<
-      'details-panel.details-panel',
+    combinedContent: Schema.Attribute.Component<
+      'combined-content.combined-content',
       false
     >;
-    heading: Schema.Attribute.Component<'heading.heading', true>;
-    map: Schema.Attribute.Component<'map.map', false>;
-    newsList: Schema.Attribute.Component<'news-list.news-list', false>;
-    personList: Schema.Attribute.Component<'person-list.person-list', false>;
-    plainText: Schema.Attribute.Component<'plain-text.plain-text', false>;
-    singleRow: Schema.Attribute.Component<'single-row.single-row', false>;
-    singleRowList: Schema.Attribute.Component<'single-row.single-row', true>;
     title: Schema.Attribute.String;
-    vacancyList: Schema.Attribute.Component<'vacancy-list.vacancy-list', false>;
-    widgetList: Schema.Attribute.Component<
-      'widget-list-item.widget-list-item',
-      true
-    >;
   };
 }
 
@@ -186,29 +214,32 @@ export interface PlainTextPlainText extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionListItemBlockSectionListItemBlock
+  extends Struct.ComponentSchema {
+  collectionName: 'components_section_list_item_block_section_list_item_blocks';
+  info: {
+    displayName: 'sectionListItemBlock';
+  };
+  attributes: {
+    combinedContent: Schema.Attribute.Component<
+      'combined-content.combined-content',
+      false
+    >;
+    optionList: Schema.Attribute.Component<'option-list.option-list', false>;
+  };
+}
+
 export interface SectionListItemSectionListItem extends Struct.ComponentSchema {
   collectionName: 'components_section_list_item_section_list_items';
   info: {
     displayName: 'sectionListItem';
   };
   attributes: {
-    detailsPanel: Schema.Attribute.Component<
-      'details-panel.details-panel',
-      false
-    >;
-    heading: Schema.Attribute.Component<'heading.heading', false>;
-    newsList: Schema.Attribute.Component<'news-list.news-list', false>;
-    optionList: Schema.Attribute.Component<'option-list.option-list', false>;
-    personList: Schema.Attribute.Component<'person-list.person-list', false>;
-    plainText: Schema.Attribute.Component<'plain-text.plain-text', false>;
-    singleRow: Schema.Attribute.Component<'single-row.single-row', false>;
-    singleRowList: Schema.Attribute.Component<'single-row.single-row', true>;
-    title: Schema.Attribute.String;
-    vacancyList: Schema.Attribute.Component<'vacancy-list.vacancy-list', false>;
-    widgetList: Schema.Attribute.Component<
-      'widget-list-item.widget-list-item',
+    sectionItemBlocks: Schema.Attribute.Component<
+      'section-list-item-block.section-list-item-block',
       true
     >;
+    title: Schema.Attribute.String;
   };
 }
 
@@ -298,6 +329,8 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'branch-list.branch-list': BranchListBranchList;
+      'bullet-chain-list.bullet-chain-list': BulletChainListBulletChainList;
+      'combined-content.combined-content': CombinedContentCombinedContent;
       'data-table-row-cell.data-table-row-cell': DataTableRowCellDataTableRowCell;
       'data-table-row.data-table-row': DataTableRowDataTableRow;
       'data-table.data-table': DataTableDataTable;
@@ -311,6 +344,7 @@ declare module '@strapi/strapi' {
       'person-item.person-item': PersonItemPersonItem;
       'person-list.person-list': PersonListPersonList;
       'plain-text.plain-text': PlainTextPlainText;
+      'section-list-item-block.section-list-item-block': SectionListItemBlockSectionListItemBlock;
       'section-list-item.section-list-item': SectionListItemSectionListItem;
       'section-list.section-list': SectionListSectionList;
       'single-row-list.single-row-list': SingleRowListSingleRowList;

@@ -1,0 +1,70 @@
+{
+  "collectionName": "components_combined_content_combined_contents",
+  "info": {
+    "displayName": "combinedContent"
+  },
+  "options": {},
+  "attributes": {
+    "branchList": {
+      "type": "component",
+      "component": "branch-list.branch-list",
+      "repeatable": false
+    },
+    "detailsPanel": {
+      "type": "component",
+      "component": "details-panel.details-panel",
+      "repeatable": false
+    },
+    "heading": {
+      "type": "component",
+      "component": "heading.heading",
+      "repeatable": false
+    },
+    "map": {
+      "type": "component",
+      "component": "map.map",
+      "repeatable": false
+    },
+    "newsList": {
+      "type": "component",
+      "component": "news-list.news-list",
+      "repeatable": false
+    },
+    "widgetList": {
+      "type": "component",
+      "component": "widget-list.widget-list",
+      "repeatable": false
+    },
+    "vacancyList": {
+      "type": "component",
+      "component": "vacancy-list.vacancy-list",
+      "repeatable": false
+    },
+    "personList": {
+      "type": "component",
+      "component": "person-list.person-list",
+      "repeatable": false
+    },
+    "plainText": {
+      "type": "component",
+      "component": "plain-text.plain-text",
+      "repeatable": false
+    },
+    "singleRowList": {
+      "type": "component",
+      "component": "single-row-list.single-row-list",
+      "repeatable": false
+    },
+    "singleRow": {
+      "type": "component",
+      "component": "single-row.single-row",
+      "repeatable": false
+    },
+    "bulletChain": {
+      "type": "component",
+      "component": "bullet-chain-list.bullet-chain-list",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}
