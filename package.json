@@ -12,24 +12,29 @@
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "^5.31.3",
     "@strapi/plugin-users-permissions": "^5.31.3",
     "@strapi/provider-email-nodemailer": "^5.36.0",
     "@strapi/strapi": "^5.31.3",
+    "bcryptjs": "^2.4.3",
     "pg": "8.8.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
-    "styled-components": "^6.0.0"
+    "styled-components": "^6.0.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "baseline-browser-mapping": "^2.9.19",
+    "vitest": "^3.2.4",
     "typescript": "^5"
   },
   "engines": {

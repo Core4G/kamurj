@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "registration_sessions",
+  "info": {
+    "singularName": "registration-session",
+    "pluralName": "registration-sessions",
+    "displayName": "Registration Session"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "sessionId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "state": {
+      "type": "enumeration",
+      "enum": ["STARTED", "PHONE_VERIFIED", "EMAIL_VERIFIED", "COMPLETED", "CLOSED"],
+      "default": "STARTED",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email"
+    },
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
+    },
+    "passportNumber": {
+      "type": "string",
+      "required": true
+    },
+    "passportType": {
+      "type": "enumeration",
+      "enum": ["PASSPORT", "ID_CARD"],
+      "default": "PASSPORT"
+    },
+    "passportIssueDate": {
+      "type": "date"
+    },
+    "passportValidTill": {
+      "type": "date"
+    },
+    "phoneVerifiedAt": {
+      "type": "datetime"
+    },
+    "emailVerifiedAt": {
+      "type": "datetime"
+    },
+    "expiresAt": {
+      "type": "datetime"
+    }
+  }
+}

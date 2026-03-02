@@ -1,0 +1,79 @@
+{
+  "kind": "collectionType",
+  "collectionName": "customer_profiles",
+  "info": {
+    "singularName": "customer-profile",
+    "pluralName": "customer-profiles",
+    "displayName": "Customer Profile"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "unique": true,
+      "required": true
+    },
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "passportNumber": {
+      "type": "string",
+      "required": true
+    },
+    "passportType": {
+      "type": "enumeration",
+      "enum": ["PASSPORT", "ID_CARD"],
+      "default": "PASSPORT"
+    },
+    "passportIssueDate": {
+      "type": "date"
+    },
+    "passportValidTill": {
+      "type": "date"
+    },
+    "kycStatus": {
+      "type": "enumeration",
+      "enum": ["NOT_ATTEMPTED", "PENDING", "PASSED", "FAILED"],
+      "default": "NOT_ATTEMPTED"
+    },
+    "kycAttempts": {
+      "type": "integer",
+      "default": 0
+    },
+    "pendingForManualVerification": {
+      "type": "boolean",
+      "default": false
+    },
+    "ssn": {
+      "type": "string"
+    },
+    "pinHash": {
+      "type": "string"
+    },
+    "lastKycErrorCode": {
+      "type": "string"
+    },
+    "lastKycErrorMessage": {
+      "type": "text"
+    }
+  }
+}

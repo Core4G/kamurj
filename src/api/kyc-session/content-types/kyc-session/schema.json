@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kyc_sessions",
+  "info": {
+    "singularName": "kyc-session",
+    "pluralName": "kyc-sessions",
+    "displayName": "KYC Session"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["DOC_PENDING", "DOC_MATCHED", "DOC_FAILED", "FACE_PENDING", "FACE_PASSED", "FACE_FAILED"],
+      "default": "DOC_PENDING"
+    },
+    "providerRequestId": {
+      "type": "string"
+    },
+    "expiresAt": {
+      "type": "datetime"
+    },
+    "lastStepAt": {
+      "type": "datetime"
+    },
+    "errorCode": {
+      "type": "string"
+    },
+    "errorMessage": {
+      "type": "text"
+    },
+    "docMatchSummary": {
+      "type": "json"
+    }
+  }
+}

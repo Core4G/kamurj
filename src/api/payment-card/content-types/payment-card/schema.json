@@ -1,0 +1,68 @@
+{
+  "kind": "collectionType",
+  "collectionName": "payment_cards",
+  "info": {
+    "singularName": "payment-card",
+    "pluralName": "payment-cards",
+    "displayName": "Payment Card"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    },
+    "bankCardId": {
+      "type": "string"
+    },
+    "cardToken": {
+      "type": "string"
+    },
+    "maskedPan": {
+      "type": "string",
+      "required": true
+    },
+    "last4": {
+      "type": "string",
+      "required": true
+    },
+    "brand": {
+      "type": "string"
+    },
+    "expMonth": {
+      "type": "integer"
+    },
+    "expYear": {
+      "type": "integer"
+    },
+    "cardholderName": {
+      "type": "string"
+    },
+    "issuerBank": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "fingerprint": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["ACTIVE", "INACTIVE", "BLOCKED", "EXPIRED", "PENDING_VERIFICATION"],
+      "default": "PENDING_VERIFICATION"
+    },
+    "isDefault": {
+      "type": "boolean",
+      "default": false
+    },
+    "bankCustomerId": {
+      "type": "string"
+    }
+  }
+}

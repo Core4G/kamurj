@@ -107,6 +107,43 @@ export interface AdminApiTokenPermission extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface AdminAuditLog extends Struct.CollectionTypeSchema {
+  collectionName: 'strapi_audit_logs';
+  info: {
+    displayName: 'Audit Log';
+    pluralName: 'audit-logs';
+    singularName: 'audit-log';
+  };
+  options: {
+    draftAndPublish: false;
+    timestamps: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    action: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'admin::audit-log'> &
+      Schema.Attribute.Private;
+    payload: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
+  };
+}
+
 export interface AdminPermission extends Struct.CollectionTypeSchema {
   collectionName: 'admin_permissions';
   info: {
@@ -742,6 +779,62 @@ export interface ApiConsumerPageConsumerPage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiCustomerProfileCustomerProfile
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'customer_profiles';
+  info: {
+    displayName: 'Customer Profile';
+    pluralName: 'customer-profiles';
+    singularName: 'customer-profile';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email & Schema.Attribute.Required;
+    firstName: Schema.Attribute.String & Schema.Attribute.Required;
+    kycAttempts: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    kycStatus: Schema.Attribute.Enumeration<
+      ['NOT_ATTEMPTED', 'PENDING', 'PASSED', 'FAILED']
+    > &
+      Schema.Attribute.DefaultTo<'NOT_ATTEMPTED'>;
+    lastKycErrorCode: Schema.Attribute.String;
+    lastKycErrorMessage: Schema.Attribute.Text;
+    lastName: Schema.Attribute.String & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::customer-profile.customer-profile'
+    > &
+      Schema.Attribute.Private;
+    passportIssueDate: Schema.Attribute.Date;
+    passportNumber: Schema.Attribute.String & Schema.Attribute.Required;
+    passportType: Schema.Attribute.Enumeration<['PASSPORT', 'ID_CARD']> &
+      Schema.Attribute.DefaultTo<'PASSPORT'>;
+    passportValidTill: Schema.Attribute.Date;
+    pendingForManualVerification: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    phone: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    pinHash: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    ssn: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+  };
+}
+
 export interface ApiExchangeRateExchangeRate
   extends Struct.CollectionTypeSchema {
   collectionName: 'exchange_rates';
@@ -1042,6 +1135,55 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiKycSessionKycSession extends Struct.CollectionTypeSchema {
+  collectionName: 'kyc_sessions';
+  info: {
+    displayName: 'KYC Session';
+    pluralName: 'kyc-sessions';
+    singularName: 'kyc-session';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    docMatchSummary: Schema.Attribute.JSON;
+    errorCode: Schema.Attribute.String;
+    errorMessage: Schema.Attribute.Text;
+    expiresAt: Schema.Attribute.DateTime;
+    lastStepAt: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::kyc-session.kyc-session'
+    > &
+      Schema.Attribute.Private;
+    providerRequestId: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    status: Schema.Attribute.Enumeration<
+      [
+        'DOC_PENDING',
+        'DOC_MATCHED',
+        'DOC_FAILED',
+        'FACE_PENDING',
+        'FACE_PASSED',
+        'FACE_FAILED',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'DOC_PENDING'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    > &
+      Schema.Attribute.Required;
   };
 }
 
@@ -1572,6 +1714,98 @@ export interface ApiOtherPageOtherPage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiOtpCodeOtpCode extends Struct.CollectionTypeSchema {
+  collectionName: 'otp_codes';
+  info: {
+    displayName: 'OTP Code';
+    pluralName: 'otp-codes';
+    singularName: 'otp-code';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    attempts: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    channel: Schema.Attribute.Enumeration<['PHONE', 'EMAIL']> &
+      Schema.Attribute.Required;
+    codeHash: Schema.Attribute.String & Schema.Attribute.Required;
+    consumedAt: Schema.Attribute.DateTime;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    expiresAt: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    ip: Schema.Attribute.String;
+    lastSentAt: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::otp-code.otp-code'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    purpose: Schema.Attribute.Enumeration<
+      ['REGISTER_PHONE', 'REGISTER_EMAIL', 'LOGIN']
+    > &
+      Schema.Attribute.Required;
+    resendCount: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    sessionId: Schema.Attribute.String & Schema.Attribute.Required;
+    target: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    userAgent: Schema.Attribute.String;
+  };
+}
+
+export interface ApiPaymentCardPaymentCard extends Struct.CollectionTypeSchema {
+  collectionName: 'payment_cards';
+  info: {
+    displayName: 'Payment Card';
+    pluralName: 'payment-cards';
+    singularName: 'payment-card';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    bankCardId: Schema.Attribute.String;
+    bankCustomerId: Schema.Attribute.String;
+    brand: Schema.Attribute.String;
+    cardholderName: Schema.Attribute.String;
+    cardToken: Schema.Attribute.String;
+    country: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    expMonth: Schema.Attribute.Integer;
+    expYear: Schema.Attribute.Integer;
+    fingerprint: Schema.Attribute.String;
+    isDefault: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    issuerBank: Schema.Attribute.String;
+    last4: Schema.Attribute.String & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::payment-card.payment-card'
+    > &
+      Schema.Attribute.Private;
+    maskedPan: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    status: Schema.Attribute.Enumeration<
+      ['ACTIVE', 'INACTIVE', 'BLOCKED', 'EXPIRED', 'PENDING_VERIFICATION']
+    > &
+      Schema.Attribute.DefaultTo<'PENDING_VERIFICATION'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    > &
+      Schema.Attribute.Required;
+  };
+}
+
 export interface ApiPurposePurpose extends Struct.CollectionTypeSchema {
   collectionName: 'purposes';
   info: {
@@ -1604,6 +1838,54 @@ export interface ApiPurposePurpose extends Struct.CollectionTypeSchema {
         };
       }>;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiRegistrationSessionRegistrationSession
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'registration_sessions';
+  info: {
+    displayName: 'Registration Session';
+    pluralName: 'registration-sessions';
+    singularName: 'registration-session';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    emailVerifiedAt: Schema.Attribute.DateTime;
+    expiresAt: Schema.Attribute.DateTime;
+    firstName: Schema.Attribute.String & Schema.Attribute.Required;
+    lastName: Schema.Attribute.String & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::registration-session.registration-session'
+    > &
+      Schema.Attribute.Private;
+    passportIssueDate: Schema.Attribute.Date;
+    passportNumber: Schema.Attribute.String & Schema.Attribute.Required;
+    passportType: Schema.Attribute.Enumeration<['PASSPORT', 'ID_CARD']> &
+      Schema.Attribute.DefaultTo<'PASSPORT'>;
+    passportValidTill: Schema.Attribute.Date;
+    phone: Schema.Attribute.String & Schema.Attribute.Required;
+    phoneVerifiedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    sessionId: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    state: Schema.Attribute.Enumeration<
+      ['STARTED', 'PHONE_VERIFIED', 'EMAIL_VERIFIED', 'COMPLETED', 'CLOSED']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'STARTED'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2278,6 +2560,7 @@ declare module '@strapi/strapi' {
     export interface ContentTypeSchemas {
       'admin::api-token': AdminApiToken;
       'admin::api-token-permission': AdminApiTokenPermission;
+      'admin::audit-log': AdminAuditLog;
       'admin::permission': AdminPermission;
       'admin::role': AdminRole;
       'admin::session': AdminSession;
@@ -2291,12 +2574,14 @@ declare module '@strapi/strapi' {
       'api::call-back-request.call-back-request': ApiCallBackRequestCallBackRequest;
       'api::code-snippet.code-snippet': ApiCodeSnippetCodeSnippet;
       'api::consumer-page.consumer-page': ApiConsumerPageConsumerPage;
+      'api::customer-profile.customer-profile': ApiCustomerProfileCustomerProfile;
       'api::exchange-rate.exchange-rate': ApiExchangeRateExchangeRate;
       'api::faq-page.faq-page': ApiFaqPageFaqPage;
       'api::feedback.feedback': ApiFeedbackFeedback;
       'api::global.global': ApiGlobalGlobal;
       'api::gold-rate.gold-rate': ApiGoldRateGoldRate;
       'api::home-page.home-page': ApiHomePageHomePage;
+      'api::kyc-session.kyc-session': ApiKycSessionKycSession;
       'api::language.language': ApiLanguageLanguage;
       'api::legal-act.legal-act': ApiLegalActLegalAct;
       'api::loan-application.loan-application': ApiLoanApplicationLoanApplication;
@@ -2306,7 +2591,10 @@ declare module '@strapi/strapi' {
       'api::news-item.news-item': ApiNewsItemNewsItem;
       'api::news-page.news-page': ApiNewsPageNewsPage;
       'api::other-page.other-page': ApiOtherPageOtherPage;
+      'api::otp-code.otp-code': ApiOtpCodeOtpCode;
+      'api::payment-card.payment-card': ApiPaymentCardPaymentCard;
       'api::purpose.purpose': ApiPurposePurpose;
+      'api::registration-session.registration-session': ApiRegistrationSessionRegistrationSession;
       'api::reports-page.reports-page': ApiReportsPageReportsPage;
       'api::site-map-page.site-map-page': ApiSiteMapPageSiteMapPage;
       'api::stake-holder-page.stake-holder-page': ApiStakeHolderPageStakeHolderPage;

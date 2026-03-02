@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "otp_codes",
+  "info": {
+    "singularName": "otp-code",
+    "pluralName": "otp-codes",
+    "displayName": "OTP Code"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "channel": {
+      "type": "enumeration",
+      "enum": ["PHONE", "EMAIL"],
+      "required": true
+    },
+    "target": {
+      "type": "string",
+      "required": true
+    },
+    "codeHash": {
+      "type": "string",
+      "required": true
+    },
+    "expiresAt": {
+      "type": "datetime",
+      "required": true
+    },
+    "attempts": {
+      "type": "integer",
+      "default": 0
+    },
+    "resendCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "lastSentAt": {
+      "type": "datetime"
+    },
+    "purpose": {
+      "type": "enumeration",
+      "enum": ["REGISTER_PHONE", "REGISTER_EMAIL", "LOGIN"],
+      "required": true
+    },
+    "sessionId": {
+      "type": "string",
+      "required": true
+    },
+    "consumedAt": {
+      "type": "datetime"
+    },
+    "ip": {
+      "type": "string"
+    },
+    "userAgent": {
+      "type": "string"
+    }
+  }
+}
