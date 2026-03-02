@@ -4,7 +4,8 @@ import { randomUUID } from 'crypto';
 import { assertRateLimit } from './rate-limit';
 import {
   completeRegistrationSchema,
-  loginSchema,
+  loginCredentialsSchema,
+  loginPinSchema,
   registerPhoneSchema,
   requestEmailOtpSchema,
   validateBody,
@@ -16,15 +17,35 @@ import { generateOtp, getOtpConfig, hashOtp, verifyOtpHash } from './otp';
 const OTP_UID = 'api::otp-code.otp-code';
 const REG_UID = 'api::registration-session.registration-session';
 const PROFILE_UID = 'api::customer-profile.customer-profile';
+const CARD_UID = 'api::payment-card.payment-card';
+const KYC_SESSION_UID = 'api::kyc-session.kyc-session';
 
 const REGISTRATION_SESSION_TTL_MINUTES = Number(process.env.REGISTRATION_SESSION_TTL_MINUTES || 30);
 const LOGIN_WINDOW_MS = Number(process.env.LOGIN_RATE_WINDOW_MS || 60_000);
 const LOGIN_MAX_PER_WINDOW = Number(process.env.LOGIN_RATE_MAX_PER_WINDOW || 10);
+const LOGIN_SESSION_TTL_SECONDS = Number(process.env.LOGIN_SESSION_TTL_SECONDS || 300);
+const LOGIN_PIN_MAX_ATTEMPTS = Number(process.env.LOGIN_PIN_MAX_ATTEMPTS || 5);
+const LOGIN_PRE_PIN_TOKEN_TTL = String(process.env.LOGIN_PRE_PIN_TOKEN_TTL || '5m');
+const LOGIN_PRE_PIN_TOKEN_PURPOSE = 'LOGIN_PRE_PIN';
+const loginSessions = new Map<string, {
+  userId: number;
+  expiresAt: number;
+  attemptsLeft: number;
+  issuedPrePinToken: string;
+}>();
+const getStrapi = () => {
+  const app = (globalThis as any).strapi;
+  if (!app) {
+    throw new Error('Strapi instance is not available');
+  }
+  return app;
+};
 const entityService: any = new Proxy(
   {},
   {
     get(_target, property) {
-      return (strapi as any).entityService[property as keyof typeof strapi.entityService];
+      const app = getStrapi();
+      return app.entityService[property as keyof typeof app.entityService];
     },
   },
 );
@@ -43,6 +64,64 @@ const normalizeIdentifier = (value: string) => value.trim().toLowerCase();
 
 const isEmailIdentifier = (value: string) => value.includes('@');
 
+const getLoginSession = (loginSessionId: string) => {
+  const session = loginSessions.get(loginSessionId);
+
+  if (!session) {
+    return null;
+  }
+
+  if (Date.now() > session.expiresAt) {
+    loginSessions.delete(loginSessionId);
+    return null;
+  }
+
+  return session;
+};
+
+const extractBearerToken = (ctx: any) => {
+  const header = String(ctx.request.header?.authorization || ctx.request.headers?.authorization || '');
+  const [type, token] = header.split(' ');
+
+  if (type !== 'Bearer' || !token) {
+    const error: any = new Error('Authorization token is required');
+    error.status = 401;
+    throw error;
+  }
+
+  return token.trim();
+};
+
+const resolveUserAndProfileByIdentifier = async (identifier: string) => {
+  let user = null;
+
+  if (isEmailIdentifier(identifier)) {
+    user = await getStrapi().db.query('plugin::users-permissions.user').findOne({
+      where: { email: normalizeIdentifier(identifier) },
+    });
+  } else {
+    const profileByPhoneResult = await entityService.findMany(PROFILE_UID, {
+      filters: { phone: identifier },
+      populate: { user: true },
+      limit: 1,
+    });
+    const profileByPhone = Array.isArray(profileByPhoneResult) ? profileByPhoneResult : [profileByPhoneResult];
+    user = profileByPhone[0]?.user || null;
+  }
+
+  if (!user) {
+    return { user: null, customerProfile: null };
+  }
+
+  const profileResult = await entityService.findMany(PROFILE_UID, {
+    filters: { user: user.id },
+    limit: 1,
+  });
+  const profile = Array.isArray(profileResult) ? profileResult : [profileResult];
+
+  return { user, customerProfile: profile[0] || null };
+};
+
 const getRequestMeta = (ctx) => ({
   ip: ctx.request.ip,
   userAgent: String(ctx.request.header['user-agent'] || ''),
@@ -53,7 +132,31 @@ const hashSensitive = (value: string) => {
   return crypto.createHmac('sha256', secret).update(value).digest('hex');
 };
 
+const shouldLogRawTokens = process.env.AUTH_FLOW_LOG_RAW_TOKENS === 'true';
+
+const tokenLogView = (token: string) => {
+  if (!token) {
+    return '(empty)';
+  }
+
+  if (shouldLogRawTokens) {
+    return token;
+  }
+
+  const start = token.slice(0, 12);
+  const end = token.slice(-8);
+  return `${start}...${end}`;
+};
+
 const requestPhoneOtpFromProvider = async (phone: string) => {
+  const mockEnabled = process.env.MOCK_PHONE_OTP_ENABLED !== 'false';
+  const mockOtp = String(process.env.MOCK_PHONE_OTP_CODE || '123456');
+
+  if (mockEnabled) {
+    getStrapi().log.info(`Phone OTP mock mode enabled. Returning mocked OTP for ${phone}`);
+    return { otp: mockOtp, providerRequestId: 'mock-provider-request-id' };
+  }
+
   const providerUrl = process.env.SMS_PROVIDER_URL;
   const apiKey = process.env.SMS_PROVIDER_API_KEY;
   const apiSecret = process.env.SMS_PROVIDER_API_SECRET;
@@ -67,7 +170,7 @@ const requestPhoneOtpFromProvider = async (phone: string) => {
     }
 
     const fallbackOtp = generateOtp();
-    strapi.log.warn(`SMS provider not configured. Local OTP fallback is used for ${phone}`);
+    getStrapi().log.warn(`SMS provider not configured. Local OTP fallback is used for ${phone}`);
     return { otp: fallbackOtp, providerRequestId: null };
   }
 
@@ -105,11 +208,38 @@ const requestPhoneOtpFromProvider = async (phone: string) => {
 };
 
 const sendEmailOtp = async (email: string, otp: string) => {
-  await strapi.plugin('email').service('email').send({
-    to: email,
-    subject: 'Your OTP code',
-    text: `Your OTP is ${otp}`,
-  });
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+
+  if (!gmailUser || !gmailAppPassword) {
+    getStrapi().log.error('[auth-flow] Email provider configuration missing: GMAIL_USER and/or GMAIL_APP_PASSWORD');
+    const error: any = new Error('Email OTP provider is not configured');
+    error.status = 503;
+    throw error;
+  }
+
+  try {
+    await getStrapi().plugin('email').service('email').send({
+      to: email,
+      subject: 'Your OTP code',
+      text: `Your OTP is ${otp}`,
+    });
+  } catch (cause: any) {
+    const message = String(cause?.message || '');
+    const authFailed = cause?.code === 'EAUTH' || /invalid login|badcredentials|username and password not accepted/i.test(message);
+
+    if (authFailed) {
+      getStrapi().log.error('[auth-flow] SMTP auth failed for email OTP. Verify Gmail app password and account security settings.');
+      const error: any = new Error('Email OTP provider authentication failed');
+      error.status = 502;
+      throw error;
+    }
+
+    getStrapi().log.error(`[auth-flow] Email OTP send failed: ${message}`);
+    const error: any = new Error('Email OTP provider request failed');
+    error.status = 502;
+    throw error;
+  }
 };
 
 const getRegistrationSession = async (sessionId: string) => {
@@ -151,7 +281,7 @@ const ensureUniquePhone = async (phone: string) => {
 };
 
 const ensureUniqueEmail = async (email: string) => {
-  const existingUser = await strapi.db.query('plugin::users-permissions.user').findOne({
+  const existingUser = await getStrapi().db.query('plugin::users-permissions.user').findOne({
     where: { email: normalizeIdentifier(email) },
   });
 
@@ -259,7 +389,14 @@ module.exports = {
   async requestPhoneOtp(ctx) {
     assertRateLimit(`otp:phone:${ctx.request.ip}`, 20, 60_000);
 
-    const body = validateBody(registerPhoneSchema, ctx.request.body || {});
+    const incomingBody = ctx.request.body || {};
+    getStrapi().log.info(`[requestPhoneOtp] received payload phone=${String(incomingBody?.phone ?? '')}`);
+
+    const body = validateBody(registerPhoneSchema, incomingBody);
+    getStrapi().log.info(`[requestPhoneOtp] normalized phone=${String(body.phone)}`);
+    getStrapi().log.info(
+      `[requestPhoneOtp] registration identity firstName=${String(body.firstName)} lastName=${String(body.lastName)} passportNumber=${String(body.passportNumber)} passportType=${String(body.passportType)}`,
+    );
     await ensureUniquePhone(body.phone);
 
     const existingSessionRows = await entityService.findMany(REG_UID, {
@@ -414,42 +551,19 @@ module.exports = {
     const body = validateBody(completeRegistrationSchema, ctx.request.body || {});
     const session = await getRegistrationSession(body.sessionId);
 
+    if (session) {
+      getStrapi().log.info(
+        `[completeRegistration] session snapshot sessionId=${String(body.sessionId)} phone=${String(session.phone || '')} email=${String(session.email || '')} passportNumber=${String(session.passportNumber || '')}`,
+      );
+    }
+
     if (!session || session.state !== 'EMAIL_VERIFIED' || isExpired(session.expiresAt)) {
       const error: any = new Error('Invalid registration session');
       error.status = 400;
       throw error;
     }
 
-    const consumedPhoneOtpRows = await entityService.findMany(OTP_UID, {
-      filters: {
-        sessionId: body.sessionId,
-        channel: 'PHONE',
-        purpose: 'REGISTER_PHONE',
-        target: session.phone,
-        consumedAt: { $notNull: true },
-      },
-      limit: 1,
-    });
-
-    const consumedEmailOtpRows = await entityService.findMany(OTP_UID, {
-      filters: {
-        sessionId: body.sessionId,
-        channel: 'EMAIL',
-        purpose: 'REGISTER_EMAIL',
-        target: session.email,
-        consumedAt: { $notNull: true },
-      },
-      limit: 1,
-    });
-
-    const consumedPhoneOtp = Array.isArray(consumedPhoneOtpRows)
-      ? consumedPhoneOtpRows[0]
-      : consumedPhoneOtpRows;
-    const consumedEmailOtp = Array.isArray(consumedEmailOtpRows)
-      ? consumedEmailOtpRows[0]
-      : consumedEmailOtpRows;
-
-    if (!consumedPhoneOtp || !consumedEmailOtp) {
+    if (!session.phoneVerifiedAt || !session.emailVerifiedAt) {
       const error: any = new Error('OTP verification is incomplete');
       error.status = 400;
       throw error;
@@ -462,7 +576,7 @@ module.exports = {
       await ensureUniqueEmail(session.email);
 
       const generatedUsername = `cus_${randomUUID().replace(/-/g, '').slice(0, 16)}`;
-      const usersPermissionsService = strapi.plugin('users-permissions').service('user');
+      const usersPermissionsService = getStrapi().plugin('users-permissions').service('user');
 
       const user = await usersPermissionsService.add({
         username: generatedUsername,
@@ -513,7 +627,7 @@ module.exports = {
       return { userId: user.id, next: 'KYC_START_SCREEN' };
     } catch (error) {
       if (userId) {
-        await strapi.db.query('plugin::users-permissions.user').delete({
+        await getStrapi().db.query('plugin::users-permissions.user').delete({
           where: { id: userId },
         });
       }
@@ -522,28 +636,14 @@ module.exports = {
     }
   },
 
-  async login(ctx) {
+  async verifyLoginCredentials(ctx) {
     assertRateLimit(`login:${ctx.request.ip}`, LOGIN_MAX_PER_WINDOW, LOGIN_WINDOW_MS);
 
-    const body = validateBody(loginSchema, ctx.request.body || {});
+    const body = validateBody(loginCredentialsSchema, ctx.request.body || {});
     const identifier = body.identifier.trim();
-    const usersPermissionsService = strapi.plugin('users-permissions').service('user');
+    const usersPermissionsService = getStrapi().plugin('users-permissions').service('user');
 
-    let user = null;
-
-    if (isEmailIdentifier(identifier)) {
-      user = await strapi.db.query('plugin::users-permissions.user').findOne({
-        where: { email: normalizeIdentifier(identifier) },
-      });
-    } else {
-      const profileResult = await entityService.findMany(PROFILE_UID, {
-        filters: { phone: identifier },
-        populate: { user: true },
-        limit: 1,
-      });
-      const profile = Array.isArray(profileResult) ? profileResult : [profileResult];
-      user = profile[0]?.user || null;
-    }
+    const { user } = await resolveUserAndProfileByIdentifier(identifier);
 
     if (!user) {
       const error: any = new Error('Invalid credentials');
@@ -562,30 +662,132 @@ module.exports = {
       throw error;
     }
 
+    const loginSessionId = randomUUID();
+
+    const prePinToken = getStrapi().plugin('users-permissions').service('jwt').issue(
+      {
+        id: user.id,
+        purpose: LOGIN_PRE_PIN_TOKEN_PURPOSE,
+        loginSessionId,
+      },
+      { expiresIn: LOGIN_PRE_PIN_TOKEN_TTL },
+    );
+
+    loginSessions.set(loginSessionId, {
+      userId: user.id,
+      expiresAt: Date.now() + LOGIN_SESSION_TTL_SECONDS * 1000,
+      attemptsLeft: LOGIN_PIN_MAX_ATTEMPTS,
+      issuedPrePinToken: prePinToken,
+    });
+
+    getStrapi().log.info(`[auth-flow] issued pre-pin token for loginSessionId=${loginSessionId} token=${tokenLogView(prePinToken)}`);
+    getStrapi().log.info(`[auth-flow] issued pre-pin token hash for loginSessionId=${loginSessionId}: ${hashSensitive(prePinToken)}`);
+
+    return {
+      token: prePinToken,
+      next: 'VERIFY_PIN',
+      expiresInSeconds: LOGIN_SESSION_TTL_SECONDS,
+    };
+  },
+
+  async verifyLoginPin(ctx) {
+    assertRateLimit(`login-pin:${ctx.request.ip}`, LOGIN_MAX_PER_WINDOW, LOGIN_WINDOW_MS);
+
+    const body = validateBody(loginPinSchema, ctx.request.body || {});
+    const token = extractBearerToken(ctx);
+    const jwtService = getStrapi().plugin('users-permissions').service('jwt');
+
+    let tokenPayload: any;
+    try {
+      tokenPayload = await jwtService.verify(token);
+      getStrapi().log.info(`[auth-flow] verifyLoginPin received token=${tokenLogView(token)}`);
+      getStrapi().log.info(`[auth-flow] verifyLoginPin received token hash: ${hashSensitive(token)}`);
+      getStrapi().log.info(`[auth-flow] verifyLoginPin decoded payload keys: ${Object.keys(tokenPayload || {}).join(',')}`);
+    } catch (_error) {
+      const error: any = new Error('Invalid or expired login token');
+      error.status = 401;
+      throw error;
+    }
+
+    if (tokenPayload?.purpose !== LOGIN_PRE_PIN_TOKEN_PURPOSE || !tokenPayload?.loginSessionId) {
+      getStrapi().log.error(
+        `[auth-flow] verifyLoginPin invalid token payload: purpose=${String(tokenPayload?.purpose || '')} loginSessionId=${String(tokenPayload?.loginSessionId || '')}`,
+      );
+      getStrapi().log.error('[auth-flow] verifyLoginPin comparison skipped: token does not contain required pre-pin claims');
+      const error: any = new Error('Invalid login token');
+      error.status = 401;
+      throw error;
+    }
+
+    const session = getLoginSession(String(tokenPayload.loginSessionId));
+
+    if (!session) {
+      const error: any = new Error('Invalid or expired login session');
+      error.status = 400;
+      throw error;
+    }
+
+    const tokensMatch = session.issuedPrePinToken === token;
+    getStrapi().log.info(
+      `[auth-flow] pre-pin token comparison for loginSessionId=${String(tokenPayload.loginSessionId)} matched=${tokensMatch}`,
+    );
+    getStrapi().log.info(
+      `[auth-flow] issued token for comparison=${tokenLogView(session.issuedPrePinToken)} received token=${tokenLogView(token)}`,
+    );
+    getStrapi().log.info(
+      `[auth-flow] issued token hash=${hashSensitive(session.issuedPrePinToken)} received token hash=${hashSensitive(token)}`,
+    );
+
+    if (Number(session.userId) !== Number(tokenPayload.id)) {
+      const error: any = new Error('Invalid login token');
+      error.status = 401;
+      throw error;
+    }
+
+    const user = await getStrapi().db.query('plugin::users-permissions.user').findOne({
+      where: { id: session.userId },
+    });
+
+    if (!user) {
+      loginSessions.delete(String(tokenPayload.loginSessionId));
+      const error: any = new Error('Invalid credentials');
+      error.status = 400;
+      throw error;
+    }
+
     const profileResult = await entityService.findMany(PROFILE_UID, {
       filters: { user: user.id },
       limit: 1,
     });
     const profile = Array.isArray(profileResult) ? profileResult : [profileResult];
-
     const customerProfile = profile[0];
 
     if (!customerProfile) {
+      loginSessions.delete(String(tokenPayload.loginSessionId));
       const error: any = new Error('Profile not found');
       error.status = 400;
       throw error;
     }
 
-    if (body.pin) {
-      const pinValid = await bcrypt.compare(body.pin, customerProfile.pinHash || '');
-      if (!pinValid) {
-        const error: any = new Error('Invalid credentials');
-        error.status = 400;
-        throw error;
+    const pinValid = await bcrypt.compare(body.pin, customerProfile.pinHash || '');
+    if (!pinValid) {
+      session.attemptsLeft -= 1;
+
+      if (session.attemptsLeft <= 0) {
+        loginSessions.delete(String(tokenPayload.loginSessionId));
+      } else {
+        loginSessions.set(String(tokenPayload.loginSessionId), session);
       }
+
+      const error: any = new Error('Invalid credentials');
+      error.status = 400;
+      error.details = { attemptsLeft: Math.max(0, session.attemptsLeft) };
+      throw error;
     }
 
-    const jwt = strapi.plugin('users-permissions').service('jwt').issue({
+    loginSessions.delete(String(tokenPayload.loginSessionId));
+
+    const jwt = getStrapi().plugin('users-permissions').service('jwt').issue({
       id: user.id,
     });
 
@@ -599,6 +801,109 @@ module.exports = {
         pendingForManualVerification: customerProfile.pendingForManualVerification,
       },
       expiresIn: '10m',
+    };
+  },
+
+  async deleteAccount(ctx) {
+    const authUser = ctx.state?.user;
+
+    if (!authUser?.id) {
+      const error: any = new Error('Unauthorized');
+      error.status = 401;
+      throw error;
+    }
+
+    const userId = Number(authUser.id);
+    const user = await getStrapi().db.query('plugin::users-permissions.user').findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      const error: any = new Error('User not found');
+      error.status = 404;
+      throw error;
+    }
+
+    const profileResult = await entityService.findMany(PROFILE_UID, {
+      filters: { user: userId },
+      limit: 1,
+    });
+    const profile = (Array.isArray(profileResult) ? profileResult : [profileResult]).filter(Boolean)[0] || null;
+
+    const cardsResult = await entityService.findMany(CARD_UID, {
+      filters: { user: userId },
+      limit: 500,
+    });
+    const cards = (Array.isArray(cardsResult) ? cardsResult : [cardsResult]).filter(Boolean);
+
+    const kycSessionsResult = await entityService.findMany(KYC_SESSION_UID, {
+      filters: { user: userId },
+      limit: 500,
+    });
+    const kycSessions = (Array.isArray(kycSessionsResult) ? kycSessionsResult : [kycSessionsResult]).filter(Boolean);
+
+    const registrationFilters: any[] = [];
+    const normalizedUserEmail = user.email ? normalizeIdentifier(String(user.email)) : null;
+    const normalizedProfileEmail = profile?.email ? normalizeIdentifier(String(profile.email)) : null;
+
+    if (profile?.phone) {
+      registrationFilters.push({ phone: profile.phone });
+    }
+    if (normalizedProfileEmail) {
+      registrationFilters.push({ email: normalizedProfileEmail });
+    }
+    if (normalizedUserEmail && normalizedUserEmail !== normalizedProfileEmail) {
+      registrationFilters.push({ email: normalizedUserEmail });
+    }
+
+    const registrationSessionsResult = registrationFilters.length
+      ? await entityService.findMany(REG_UID, {
+        filters: { $or: registrationFilters },
+        limit: 500,
+      })
+      : [];
+    const registrationSessions = (Array.isArray(registrationSessionsResult)
+      ? registrationSessionsResult
+      : [registrationSessionsResult]).filter(Boolean);
+    const registrationSessionIds = registrationSessions
+      .map((session: any) => String(session.sessionId || ''))
+      .filter(Boolean);
+
+    const otpRowsResult = registrationSessionIds.length
+      ? await entityService.findMany(OTP_UID, {
+        filters: { sessionId: { $in: registrationSessionIds } },
+        limit: 1000,
+      })
+      : [];
+    const otpRows = (Array.isArray(otpRowsResult) ? otpRowsResult : [otpRowsResult]).filter(Boolean);
+
+    await Promise.all(otpRows.map((row: any) => entityService.delete(OTP_UID, row.id)));
+    await Promise.all(registrationSessions.map((row: any) => entityService.delete(REG_UID, row.id)));
+    await Promise.all(cards.map((row: any) => entityService.delete(CARD_UID, row.id)));
+    await Promise.all(kycSessions.map((row: any) => entityService.delete(KYC_SESSION_UID, row.id)));
+
+    if (profile?.id) {
+      await entityService.delete(PROFILE_UID, profile.id);
+    }
+
+    for (const [sessionKey, sessionValue] of loginSessions.entries()) {
+      if (Number(sessionValue.userId) === userId) {
+        loginSessions.delete(sessionKey);
+      }
+    }
+
+    await getStrapi().db.query('plugin::users-permissions.user').delete({
+      where: { id: userId },
+    });
+
+    return {
+      deleted: true,
+      removed: {
+        cards: cards.length,
+        kycSessions: kycSessions.length,
+        registrationSessions: registrationSessions.length,
+        otpRows: otpRows.length,
+      },
     };
   },
 

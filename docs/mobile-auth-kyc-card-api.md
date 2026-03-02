@@ -19,6 +19,8 @@ Phone OTP third-party provider:
 - `SMS_PROVIDER_URL`
 - `SMS_PROVIDER_API_KEY`
 - `SMS_PROVIDER_API_SECRET`
+- `MOCK_PHONE_OTP_ENABLED` (default `true` right now for non-integrated environments)
+- `MOCK_PHONE_OTP_CODE` (default `123456`)
 
 Email OTP:
 - Existing Strapi email provider config in `config/plugins.ts` (`nodemailer` currently configured)
@@ -31,6 +33,7 @@ KYC providers:
 - `KYC_SSN_STORAGE` (`HASH` default, or `PLAIN` only if legally allowed)
 - `KYC_START_RATE_MAX` (default `6`)
 - `KYC_START_RATE_WINDOW_MS` (default `60000`)
+- Face endpoint fallback (temporary): `http://192.168.5.2:3000/kyc/liveness`
 
 Login rate limiting:
 - `LOGIN_RATE_WINDOW_MS` (default `60000`)
@@ -65,6 +68,7 @@ Notes:
 - Provider is responsible for delivering OTP to user phone.
 - Backend hashes returned OTP and stores only hash in `otp_code`.
 - Plain OTP is never persisted and should never be logged.
+- Current temporary mode: when `MOCK_PHONE_OTP_ENABLED=true`, backend simulates provider response with OTP `123456` (or `MOCK_PHONE_OTP_CODE`) and keeps the same flow.
 
 ## 3) Registration flow endpoints
 
@@ -149,27 +153,82 @@ Response:
 
 ## 4) Login
 
-`POST /api/auth/login`
+`POST /api/auth/login/verify-credentials`
 
 Body:
 ```json
 {
   "identifier": "user@example.com or +374XXXXXXXX",
-  "password": "Str0ng!Pass",
+  "password": "Str0ng!Pass"
+}
+```
+
+Response contains pre-pin token.
+
+Then call:
+
+`POST /api/auth/login/verify-pin`
+
+Headers:
+- `Authorization: Bearer <pre-pin-token>`
+
+Body:
+```json
+{
   "pin": "1234"
 }
 ```
 
-Response contains JWT with 10 minute expiry.
+Response contains final JWT with 10 minute expiry.
 
 ## 5) KYC endpoints
 
 - `POST /api/kyc/start-doc-check` (auth required)
-- `POST /api/kyc/verify-face` (auth required, multipart with `video`)
+- `POST /api/kyc/verify-face` (auth required, multipart with: `video`, `sessionId`, `deviceId`, `platform`, `appVersion`)
+
+Current mock behavior for doc-provider call (`MOCK_KYC_DOC_PROVIDER_ENABLED=true`):
+
+```json
+{
+  "ssn": 3412910627,
+  "docs": [
+    {
+      "number": "AS0497150",
+      "name": "Gor.",
+      "surname": "Gevorgyan",
+      "image": "/uploads/testPassport.png"
+    }
+  ]
+}
+```
+
+Return:
+- On success: `{ docMatched: true, next: "FACE_VERIFICATION" }`
+- On fail: `{ docMatched:false, kycStatus, attemptsLeft, pendingForManualVerification, message }`
 
 Storage policy:
-- No image/video persistence in DB or filesystem.
-- Only status/summary/error metadata is persisted.
+- The endpoint does not return passport image to frontend.
+- Passport image from provider is encrypted and stored temporarily on server for face verification step.
+- Do not persist raw image/video in DB/filesystem.
+
+Face provider request payload sent by backend (`multipart/form-data`):
+- `video` (required)
+- `passportImage` (required; read from encrypted server-side data produced by doc-check)
+- `sessionId` (required)
+- `deviceId` (required)
+- `platform` (required)
+- `appVersion` (required)
+
+Expected provider response shape:
+
+```ts
+type InferenceResponse = {
+  status: 'PASS' | 'FAIL' | 'RETRY';
+  matchScore: number;
+  livenessScore: number;
+  reasons: string[];
+};
+```
 
 ## 6) Card endpoints
 

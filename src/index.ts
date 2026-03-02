@@ -1,5 +1,7 @@
 // import type { Core } from '@strapi/strapi';
 
+let otpCleanupInterval: NodeJS.Timeout | null = null;
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -18,36 +20,41 @@ export default {
    */
   bootstrap({ strapi }) {
     const app = strapi;
-    const entityService: any = app.entityService;
     const runOtpCleanup = async () => {
       const otpUid = 'api::otp-code.otp-code';
       const now = new Date();
       const consumedThreshold = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
-      const expiredResult = await entityService.findMany(otpUid, {
-        filters: {
+      await app.db.query(otpUid).deleteMany({
+        where: {
           expiresAt: { $lt: now.toISOString() },
+          consumedAt: { $null: true },
         },
-        limit: 500,
       });
-      const expired = Array.isArray(expiredResult) ? expiredResult : [expiredResult];
 
-      const oldConsumedResult = await entityService.findMany(otpUid, {
-        filters: {
+      await app.db.query(otpUid).deleteMany({
+        where: {
           consumedAt: { $lt: consumedThreshold.toISOString() },
         },
-        limit: 500,
       });
-      const oldConsumed = Array.isArray(oldConsumedResult) ? oldConsumedResult : [oldConsumedResult];
-
-      await Promise.all(
-        [...expired, ...oldConsumed].filter(Boolean).map((row: any) => entityService.delete(otpUid, row.id)),
-      );
     };
 
     runOtpCleanup().catch((error) => app.log.error(`OTP cleanup failed: ${error?.message || String(error)}`));
-    setInterval(() => {
+
+    if (otpCleanupInterval) {
+      clearInterval(otpCleanupInterval);
+      otpCleanupInterval = null;
+    }
+
+    otpCleanupInterval = setInterval(() => {
       runOtpCleanup().catch((error) => app.log.error(`OTP cleanup failed: ${error?.message || String(error)}`));
     }, 5 * 60 * 1000);
+  },
+
+  destroy() {
+    if (otpCleanupInterval) {
+      clearInterval(otpCleanupInterval);
+      otpCleanupInterval = null;
+    }
   },
 };

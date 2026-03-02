@@ -1,11 +1,19 @@
 import { z } from 'zod';
 
 const CARD_UID = 'api::payment-card.payment-card';
+const getStrapi = () => {
+  const app = (globalThis as any).strapi;
+  if (!app) {
+    throw new Error('Strapi instance is not available');
+  }
+  return app;
+};
 const entityService: any = new Proxy(
   {},
   {
     get(_target, property) {
-      return (strapi as any).entityService[property as keyof typeof strapi.entityService];
+      const app = getStrapi();
+      return app.entityService[property as keyof typeof app.entityService];
     },
   },
 );

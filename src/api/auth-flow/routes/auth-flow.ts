@@ -32,9 +32,21 @@ module.exports = {
     },
     {
       method: 'POST',
-      path: '/auth/login',
-      handler: 'auth-flow.login',
+      path: '/auth/login/verify-credentials',
+      handler: 'auth-flow.verifyLoginCredentials',
       config: { auth: false },
+    },
+    {
+      method: 'POST',
+      path: '/auth/login/verify-pin',
+      handler: 'auth-flow.verifyLoginPin',
+      config: { auth: false },
+    },
+    {
+      method: 'DELETE',
+      path: '/auth/account',
+      handler: 'auth-flow.deleteAccount',
+      config: { auth: {} },
     },
   ],
 };

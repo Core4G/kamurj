@@ -6,6 +6,7 @@ export default [
   'strapi::poweredBy',
   'strapi::query',
   'strapi::body',
+  'global::kyc-verify-face-logger',
   'strapi::session',
   'strapi::favicon',
   'strapi::public',

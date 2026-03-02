@@ -5,7 +5,7 @@ module.exports = {
       path: '/kyc/start-doc-check',
       handler: 'kyc.startDocCheck',
       config: {
-        auth: {},
+        auth: false,
       },
     },
     {
@@ -13,7 +13,7 @@ module.exports = {
       path: '/kyc/verify-face',
       handler: 'kyc.verifyFace',
       config: {
-        auth: {},
+        auth: false,
       },
     },
   ],
