@@ -9,6 +9,9 @@
       "type": "component",
       "component": "data-table-row.data-table-row",
       "repeatable": true
+    },
+    "internalDisplayName": {
+      "type": "string"
     }
   },
   "config": {}

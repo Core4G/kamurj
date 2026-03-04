@@ -23,6 +23,9 @@
     },
     "url": {
       "type": "text"
+    },
+    "internalDisplayName": {
+      "type": "string"
     }
   },
   "config": {}

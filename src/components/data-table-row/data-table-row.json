@@ -12,6 +12,9 @@
       "type": "component",
       "component": "data-table-row-cell.data-table-row-cell",
       "repeatable": true
+    },
+    "internalDisplayName": {
+      "type": "string"
     }
   },
   "config": {}

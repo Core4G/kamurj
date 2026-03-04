@@ -688,6 +688,7 @@ module.exports = {
           populate: {
             iconSrc: true,
             activeIconSrc: true,
+            purposes: true,
           },
         },
       );
@@ -763,18 +764,18 @@ module.exports = {
       const filteredLoanCurrencies: Record<string, any[]> = {};
 
       loans.forEach((loan: any) => {
-        const groupId = loan?.loan_group?.id;
+        const slug = loan?.loan_group?.slug;
         const loanCurrencies = loan?.loan_currencies || [];
 
         if (!loanCurrencies.length) {
           return;
         }
 
-        if (groupId !== undefined && groupId !== null) {
-          if (!filteredLoanCurrencies[groupId]) {
-            filteredLoanCurrencies[groupId] = [];
+        if (slug !== undefined && slug !== null) {
+          if (!filteredLoanCurrencies[slug]) {
+            filteredLoanCurrencies[slug] = [];
           }
-          filteredLoanCurrencies[groupId].push(...loanCurrencies);
+          filteredLoanCurrencies[slug].push(...loanCurrencies);
         }
 
         if (!filteredLoanCurrencies["all"]) {

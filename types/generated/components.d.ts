@@ -73,6 +73,7 @@ export interface DataTableRowDataTableRow extends Struct.ComponentSchema {
       true
     >;
     firstColContent: Schema.Attribute.Blocks;
+    internalDisplayName: Schema.Attribute.String;
   };
 }
 
@@ -82,6 +83,7 @@ export interface DataTableDataTable extends Struct.ComponentSchema {
     displayName: 'dataTable';
   };
   attributes: {
+    internalDisplayName: Schema.Attribute.String;
     rows: Schema.Attribute.Component<'data-table-row.data-table-row', true>;
   };
 }
@@ -273,6 +275,7 @@ export interface SingleRowSingleRow extends Struct.ComponentSchema {
   };
   attributes: {
     iconSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    internalDisplayName: Schema.Attribute.String;
     isUrl: Schema.Attribute.Boolean;
     title: Schema.Attribute.Blocks;
     url: Schema.Attribute.Text;
