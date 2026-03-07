@@ -64,6 +64,11 @@
       "type": "component",
       "component": "vacancy-item.vacancy-item",
       "repeatable": true
+    },
+    "propertyList": {
+      "type": "component",
+      "component": "property-list.property-list",
+      "repeatable": false
     }
   },
   "config": {}

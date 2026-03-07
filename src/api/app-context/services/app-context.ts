@@ -38,6 +38,16 @@ const PAGE_CONTENT_POPULATE = {
                                   branches: {
                                     populate: {
                                       iconSrc: true,
+                                      imageSrc: true,
+                                    },
+                                  },
+                                },
+                              },
+                              propertyList: {
+                                populate: {
+                                  properties: {
+                                    populate: {
+                                      imageSrc: true,
                                     },
                                   },
                                 },
@@ -71,6 +81,7 @@ const PAGE_CONTENT_POPULATE = {
                                   branches: {
                                     populate: {
                                       iconSrc: true,
+                                      imageSrc: true,
                                     },
                                   },
                                 },
@@ -140,6 +151,16 @@ const PAGE_CONTENT_POPULATE = {
                           branches: {
                             populate: {
                               iconSrc: true,
+                              imageSrc: true,
+                            },
+                          },
+                        },
+                      },
+                      propertyList: {
+                        populate: {
+                          properties: {
+                            populate: {
+                              imageSrc: true,
                             },
                           },
                         },
@@ -173,6 +194,7 @@ const PAGE_CONTENT_POPULATE = {
                           branches: {
                             populate: {
                               iconSrc: true,
+                              imageSrc: true,
                             },
                           },
                         },
@@ -248,6 +270,16 @@ const PAGE_CONTENT_POPULATE = {
                       branches: {
                         populate: {
                           iconSrc: true,
+                          imageSrc: true,
+                        },
+                      },
+                    },
+                  },
+                  propertyList: {
+                    populate: {
+                      properties: {
+                        populate: {
+                          imageSrc: true,
                         },
                       },
                     },
@@ -281,6 +313,7 @@ const PAGE_CONTENT_POPULATE = {
                       branches: {
                         populate: {
                           iconSrc: true,
+                          imageSrc: true,
                         },
                       },
                     },
@@ -350,6 +383,16 @@ const PAGE_CONTENT_POPULATE = {
               branches: {
                 populate: {
                   iconSrc: true,
+                  imageSrc: true,
+                },
+              },
+            },
+          },
+          propertyList: {
+            populate: {
+              properties: {
+                populate: {
+                  imageSrc: true,
                 },
               },
             },
@@ -383,6 +426,7 @@ const PAGE_CONTENT_POPULATE = {
               branches: {
                 populate: {
                   iconSrc: true,
+                  imageSrc: true,
                 },
               },
             },

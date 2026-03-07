@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "liquidation_pages",
+  "info": {
+    "singularName": "liquidation-page",
+    "pluralName": "liquidation-pages",
+    "displayName": "LiquidationPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "displayName": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "pageContent": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "section-list.section-list",
+        "option-list.option-list",
+        "combined-content.combined-content"
+      ]
+    }
+  }
+}

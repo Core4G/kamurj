@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_property_list_property_lists",
+  "info": {
+    "displayName": "propertyList"
+  },
+  "options": {},
+  "attributes": {
+    "properties": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::property.property"
+    }
+  },
+  "config": {}
+}

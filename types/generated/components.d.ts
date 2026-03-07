@@ -40,6 +40,10 @@ export interface CombinedContentCombinedContent extends Struct.ComponentSchema {
     newsList: Schema.Attribute.Component<'news-list.news-list', false>;
     personList: Schema.Attribute.Component<'person-list.person-list', false>;
     plainText: Schema.Attribute.Component<'plain-text.plain-text', false>;
+    propertyList: Schema.Attribute.Component<
+      'property-list.property-list',
+      false
+    >;
     singleRow: Schema.Attribute.Component<'single-row.single-row', false>;
     singleRowList: Schema.Attribute.Component<
       'single-row-list.single-row-list',
@@ -217,6 +221,19 @@ export interface PlainTextPlainText extends Struct.ComponentSchema {
   };
 }
 
+export interface PropertyListPropertyList extends Struct.ComponentSchema {
+  collectionName: 'components_property_list_property_lists';
+  info: {
+    displayName: 'propertyList';
+  };
+  attributes: {
+    properties: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::property.property'
+    >;
+  };
+}
+
 export interface SectionListItemBlockSectionListItemBlock
   extends Struct.ComponentSchema {
   collectionName: 'components_section_list_item_block_section_list_item_blocks';
@@ -343,6 +360,7 @@ declare module '@strapi/strapi' {
       'person-item.person-item': PersonItemPersonItem;
       'person-list.person-list': PersonListPersonList;
       'plain-text.plain-text': PlainTextPlainText;
+      'property-list.property-list': PropertyListPropertyList;
       'section-list-item-block.section-list-item-block': SectionListItemBlockSectionListItemBlock;
       'section-list-item.section-list-item': SectionListItemSectionListItem;
       'section-list.section-list': SectionListSectionList;

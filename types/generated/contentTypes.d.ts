@@ -596,6 +596,12 @@ export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     lat: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1218,6 +1224,56 @@ export interface ApiLegalActLegalAct extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiLiquidationPageLiquidationPage
+  extends Struct.SingleTypeSchema {
+  collectionName: 'liquidation_pages';
+  info: {
+    displayName: 'LiquidationPage';
+    pluralName: 'liquidation-pages';
+    singularName: 'liquidation-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    displayName: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::liquidation-page.liquidation-page'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'combined-content.combined-content',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLoanApplicationLoanApplication
   extends Struct.CollectionTypeSchema {
   collectionName: 'loan_applications';
@@ -1666,6 +1722,68 @@ export interface ApiOtherPageOtherPage extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
+  collectionName: 'properties';
+  info: {
+    displayName: 'Property';
+    pluralName: 'properties';
+    singularName: 'property';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    address: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    category: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    imageSrc: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::property.property'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    value: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
   };
 }
 
@@ -2470,6 +2588,7 @@ declare module '@strapi/strapi' {
       'api::home-page.home-page': ApiHomePageHomePage;
       'api::language.language': ApiLanguageLanguage;
       'api::legal-act.legal-act': ApiLegalActLegalAct;
+      'api::liquidation-page.liquidation-page': ApiLiquidationPageLiquidationPage;
       'api::loan-application.loan-application': ApiLoanApplicationLoanApplication;
       'api::loan-group.loan-group': ApiLoanGroupLoanGroup;
       'api::loan.loan': ApiLoanLoan;
@@ -2477,6 +2596,7 @@ declare module '@strapi/strapi' {
       'api::news-item.news-item': ApiNewsItemNewsItem;
       'api::news-page.news-page': ApiNewsPageNewsPage;
       'api::other-page.other-page': ApiOtherPageOtherPage;
+      'api::property.property': ApiPropertyProperty;
       'api::purpose.purpose': ApiPurposePurpose;
       'api::reports-page.reports-page': ApiReportsPageReportsPage;
       'api::site-map-page.site-map-page': ApiSiteMapPageSiteMapPage;
