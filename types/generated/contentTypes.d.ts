@@ -809,6 +809,56 @@ export interface ApiConsumerPageConsumerPage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiCreditHistoryAndScoreCreditHistoryAndScore
+  extends Struct.SingleTypeSchema {
+  collectionName: 'credit_history_and_scores';
+  info: {
+    displayName: 'CreditHistoryAndScore';
+    pluralName: 'credit-history-and-scores';
+    singularName: 'credit-history-and-score';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    displayName: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::credit-history-and-score.credit-history-and-score'
+    >;
+    pageContent: Schema.Attribute.DynamicZone<
+      [
+        'section-list.section-list',
+        'option-list.option-list',
+        'combined-content.combined-content',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiExchangeRateExchangeRate
   extends Struct.CollectionTypeSchema {
   collectionName: 'exchange_rates';
@@ -2580,6 +2630,7 @@ declare module '@strapi/strapi' {
       'api::call-back-request.call-back-request': ApiCallBackRequestCallBackRequest;
       'api::code-snippet.code-snippet': ApiCodeSnippetCodeSnippet;
       'api::consumer-page.consumer-page': ApiConsumerPageConsumerPage;
+      'api::credit-history-and-score.credit-history-and-score': ApiCreditHistoryAndScoreCreditHistoryAndScore;
       'api::exchange-rate.exchange-rate': ApiExchangeRateExchangeRate;
       'api::faq-page.faq-page': ApiFaqPageFaqPage;
       'api::feedback.feedback': ApiFeedbackFeedback;
